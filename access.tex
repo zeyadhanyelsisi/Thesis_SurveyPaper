@@ -26,7 +26,7 @@
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 \doi{10.1109/ACCESS.2024.0429000}
 
-\title{Generative AI for Analog/RF Integrated Circuit Design and Netlist Synthesis: Methodologies and Applications}
+\title{Generative AI for Analog/RF Integrated Circuit Design and Netlist Synthesis: Evolving Methodologies and Emerging Applications}
 \author{\uppercase{Zeyad H. ElSisi}\authorrefmark{1}, \IEEEmembership{Fellow, IEEE},
 \uppercase{Heba M. Draz}\authorrefmark{2}, and Third C. Author,
 Jr.\authorrefmark{3},
@@ -51,31 +51,14 @@ Commerce under Grant BS123456.''}
 
 
 \begin{abstract}
-These instructions give you guidelines for preparing papers for
-IEEE Access. Use this document as a template if you are
-using \LaTeX. Otherwise, use this document as an
-instruction set. The electronic file of your paper will be formatted further
-at IEEE. Paper titles should be written in uppercase and lowercase letters,
-not all uppercase. Avoid writing long formulas with subscripts in the title;
-short formulas that identify the elements are fine (e.g., "Nd--Fe--B"). Do
-not write ``(Invited)'' in the title. Full names of authors are preferred in
-the author field, but are not required. Put a space between authors'
-initials. The abstract must be a concise yet comprehensive reflection of
-what is in your article. In particular, the abstract must be self-contained,
-without abbreviations, footnotes, or references. It should be a microcosm of
-the full article. The abstract must be between 150--250 words. Be sure that
-you adhere to these limits; otherwise, you will need to edit your abstract
-accordingly. The abstract must be written as one paragraph, and should not
-contain displayed mathematical equations or tabular material. The abstract
-should include three or four different keywords or phrases, as this will
-help readers to find it. It is important to avoid over-repetition of such
-phrases as this can result in a page being rejected by search engines.
-Ensure that your abstract reads well and is grammatically correct.
+Electronic Design Automation (EDA) in analog Integrated Circuits (ICs) continues to be a critical research area, yet its widespread adoption significantly lags behind its digital counterpart due to inherent complexities. This extended systematic review updates recent contributions in the last five years, specifically highlighting cutting-edge methods that address persistent domain-specific challenges such as data scarcity, efficient topology exploration, robust parameter optimization considering process-voltage-temperature (PVT) variations, and accurate layout parasitic management.
+Our primary objective is to equip researchers new to this rapidly evolving domain with a comprehensive collection of references, a refined understanding of current challenges, and practical application guidelines. We provide an in-depth methodological review of state-of-the-art machine learning (ML) and generative AI approaches—including Graph Neural Networks (GNNs), Large Language Models (LLMs), and Variational Autoencoders (VAEs)—which are increasingly applied across various analog circuit design tasks, from topology synthesis to parameter sizing and validation.
+Notably, this survey expands on previous works by integrating discussions on newer, comprehensive frameworks like FALCON and MenTeR, which introduce end-to-end design, multi-agent workflows, and advanced layout-aware optimization. To the best of the authors’ knowledge, this is the second review after [1] to comprehensively explore these latest applications of generative AI models in analog IC circuit design, charting their evolution and impact.
+We conclude by identifying key future research directions, emphasizing few-shot learning, multi-modal AI, and advanced multi-agent systems to further simplify human-tool interaction and guide design space exploration for industrial-scale analog ICs.
 \end{abstract}
 
 \begin{keywords}
-Enter key words or phrases in alphabetical
-order, separated by commas. Autocorrelation, beamforming, communications technology, dictionary learning, feedback, fMRI, mmWave, multipath, system design, multipath, slight fault, underlubrication fault.
+Analog integrated circuits (ICs), electronic design automation (EDA), generative artificial intelligence (GenAI), graph neural networks (GNNs), large language models (LLMs), machine learning (ML), netlist synthesis, parameter optimization, layout-aware sizing, topology synthesis, variational autoencoders (VAEs).
 \end{keywords}
 
 \titlepgskip=-21pt
@@ -84,13 +67,8 @@ order, separated by commas. Autocorrelation, beamforming, communications technol
 
 \section{Introduction}
 \label{sec:introduction}
-\PARstart{T}{his} document is a template for \LaTeX. If you are reading a paper or PDF version of this document, please download the LaTeX template or the MS Word
-template of your preferred publication from the IEEE Website at \underline
-{https://template-selector.ieee.org/secure/templateSelec}\break\underline{tor/publicationType} so you can use it to prepare your manuscript. 
-If you would prefer to use LaTeX, download IEEE's LaTeX style and sample files
-from the same Web page. You can also explore using the Overleaf editor at
-\underline
-{https://www.overleaf.com/blog/278-how-to-use-overleaf-}\break\underline{with-ieee-collabratec-your-quick-guide-to-getting-started}\break\underline{\#.xsVp6tpPkrKM9}
+\PARstart{T}{he} escalating complexity and diverse performance requirements of modern analog systems underpin advancements in crucial technologies such as generative AI, 5G/6G communication, and quantum computing. \textit{"analog genie"}
+These demands necessitate full-flow automation to effectively manage the intricate trade-offs between numerous performance parameters, a task where traditional manual approaches are notoriously time-consuming and heavily reliant on scarce expert knowledge. While digital design automation has witnessed extensive development and widespread adoption across both industry and academia, the automation of analog IC design continues to face significant challenges.
 
 IEEE will do the final formatting of your paper. If your paper is intended
 for a conference, please observe the conference page limits.
