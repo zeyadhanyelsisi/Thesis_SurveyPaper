@@ -4,9 +4,24 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,        % Enable colored links
+    linkcolor=blue,         % Internal links (references, sections, etc.)
+    citecolor=blue,         % Citation links
+    filecolor=blue,         % File links
+    urlcolor=blue,          % URL links
+    anchorcolor=blue        % Anchor links
+}
 
 \usepackage{bm}
 \makeatletter
+% Fix for missing font shapes in formata font
+\DeclareFontShape{T1}{formata}{m}{sl}{<->ssub*formata/m/it}{}
+\DeclareFontShape{T1}{formata}{b}{sl}{<->ssub*formata/b/it}{}
+\DeclareFontShape{T1}{formata}{bx}{sl}{<->ssub*formata/bx/it}{}
+
 \AtBeginDocument{\DeclareMathVersion{bold}
 \SetSymbolFont{operators}{bold}{T1}{times}{b}{n}
 \SetSymbolFont{NewLetters}{bold}{T1}{times}{b}{it}
@@ -70,7 +85,7 @@ Analog integrated circuits (ICs), electronic design automation (EDA), generative
 \PARstart{T}{he} escalating complexity and diverse performance requirements of modern analog systems underpin advancements in crucial technologies such as generative AI, 5G/6G communication, and quantum computing. \textit{"analog genie"}
 These demands necessitate full-flow automation to effectively manage the intricate trade-offs between numerous performance parameters, a task where traditional manual approaches are notoriously time-consuming and heavily reliant on scarce expert knowledge. While digital design automation has witnessed extensive development and widespread adoption across both industry and academia, the automation of analog IC design continues to face significant challenges.
 
-Researchers have made concerted efforts to automate various stages of the analog design flow\textit{"genAI paper"}. Conventionally, the process is segmented into three primary areas at the circuit level: topology selection, circuit sizing, and layout generation, often with complex feedback loops.
+Researchers have made concerted efforts to automate various stages of the analog design flow\textit{"genAI paper"}. Conventionally, the process is segmented into three primary areas at the circuit level: topology selection, circuit sizing, and layout generation, often with complex feedback loops, as clearly shown in Fig.~\ref{fig1}.
 Although remarkable progress has been achieved in layout generation tools, such as MAGICAL and ALIGN, and in certain aspects of digital IC design with generative AI, the development of scalable and robust solutions for analog circuit sizing and comprehensive topology design remains a formidable challenge. 
 Furthermore, a truly practical automation flow at each stage must inherently account for the interdependencies across design stages\textit{"5,6,7 from genAI paper"}; for instance, the initial selection of a topology must proactively consider potential layout parasitics and their subsequent impact on performance metrics.
 
@@ -81,44 +96,100 @@ In response to these challenges, machine learning (ML) has emerged as a promisin
 ML techniques can be applied individually or in combination to facilitate decision-making, function approximation, and black-box optimization. Recent breakthroughs in generative AI, a subset of ML, have presented transformative opportunities to expedite these conventional design flows. 
 Models such as Graph Neural Networks (GNNs) have shown significant advantages for handling graph-structured circuit data, while Variational Autoencoders (VAEs) are being explored to learn underlying data distributions for tasks like topology optimization. Furthermore, Large Language Models (LLMs), traditionally used for natural language processing, have demonstrated remarkable adaptability to large-scale design problems, including layout automation, optimization, and topology generation.
 
-\subsection{Abbreviations and Acronyms}
-Define abbreviations and acronyms the first time they are used in the text,
-even after they have already been defined in the abstract. Abbreviations
-such as IEEE, SI, ac, and dc do not have to be defined. Abbreviations that
-incorporate periods should not have spaces: write ``C.N.R.S.,'' not ``C. N.
-R. S.'' Do not use abbreviations in the title unless they are unavoidable
-(for example, ``IEEE'' in the title of this article).
+Despite these advances, many prior studies on ML-driven analog circuit design have often focused on isolated sub-tasks or simple, homogeneous circuits, overlooking the complexities of real-world heterogeneous systems. \textit{"AI Circuit, }
+The persistent lack of comprehensive, generic, and diverse datasets with robust metrics has been a major impediment to thoroughly evaluating and improving ML algorithms in the analog domain. Moreover, many early generative AI approaches for topology generation were limited in scale, producing single types of small or conventional ICs, or suffered from ambiguous representations.
+This has encouraged the recent works to try bridging these gaps by proposing more holistic frameworks that integrate multiple design stages, leverage multi-agent systems, and incorporate layout-aware optimization to better reflect practical design scenarios. \textit{"AI Circuit, FALCON, MenTeR "ADO-LLM", "Analog-GENIE", "AMP-AGENT"}
 
-\subsection{Other Recommendations}
-Use one space after periods and colons. Hyphenate complex modifiers:
-``zero-field-cooled magnetization.'' Avoid dangling participles, such as,
-``Using \eqref{eq}, the potential was calculated.'' [It is not clear who or what
-used \eqref{eq}.] Write instead, ``The potential was calculated by using \eqref{eq},'' or
-``Using \eqref{eq}, we calculated the potential.''
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{fig1.png}
+    \caption{\textbf{Analog design automation flow, focusing on circuit-level automation. Dashed lines indicate dependencies between design stages.}}
+    \label{fig1}
+\end{figure}
 
-Use a zero before decimal points: ``0.25,'' not ``.25.'' Use
-``cm$^{3}$,'' not ``cc.'' Indicate sample dimensions as ``0.1 cm
-$\times $ 0.2 cm,'' not ``0.1 $\times $ 0.2 cm$^{2}$.'' The
-abbreviation for ``seconds'' is ``s,'' not ``sec.'' Use
-``Wb/m$^{2}$'' or ``webers per square meter,'' not
-``webers/m$^{2}$.'' When expressing a range of values, write ``7 to
-9'' or ``7--9,'' not ``7$\sim $9.''
+This paper aims to bridge these gaps by providing an updated and expanded systematic review of generative AI applications in analog IC design. We particularly focus on recent developments that push the boundaries of automation across the entire design pipeline, addressing shortcomings such as data scarcity, limited scalability, and inadequate layout awareness.
+Specifically, this review will integrate analysis of groundbreaking new frameworks like:
 
-A parenthetical statement at the end of a sentence is punctuated outside of
-the closing parenthesis (like this). (A parenthetical sentence is punctuated
-within the parentheses.) In American English, periods and commas are within
-quotation marks, like ``this period.'' Other punctuation is ``outside''!
-Avoid contractions; for example, write ``do not'' instead of ``don't.'' The
-serial comma is preferred: ``A, B, and C'' instead of ``A, B and C.''
+\begin{itemize}
+\item \textbf{AnalogGenie}: A generative engine focused on the automatic discovery of diverse, large, and unseen analog circuit topologies using a scalable sequence-based graph representation and an augmented dataset.
+\item \textbf{AnalogCoder}: The first training-free LLM agent that designs analog circuits through Python code generation, employing feedback-enhanced flows and a circuit tool library.
+\item \textbf{SPICEPilot}: A framework leveraging LLMs to generate Python-based SPICE code, addressing data scarcity by automating dataset creation and providing standardized benchmarking.
+\item \textbf{AnalogXpert}: An LLM-based agent for subcircuit-level SPICE code generation that incorporates circuit design expertise through a proofreading strategy for iterative error correction.
+\item \textbf{MenTeR}: A fully-automated multi-agent workflow for end-to-end RF/Analog circuit netlist design, emphasizing specification understanding, collaborative optimization, and test bench validation through Chain-of-Stage reasoning and Diagram-Aware RAG.
+\item \textbf{FALCON}: A unified ML framework enabling fully automated, specification-driven analog circuit synthesis through performance-driven topology selection, GNN-based parameter inference, and layout-constrained optimization, validated with industrial-grade simulations.
+\item \textbf{AICircuit}: A multi-level dataset and benchmark that facilitates the development and evaluation of ML algorithms for both homogeneous and heterogeneous analog and RF circuit designs.
+\end{itemize}
 
-If you wish, you may write in the first person singular or plural and use
-the active voice (``I observed that $\ldots$'' or ``We observed that $\ldots$''
-instead of ``It was observed that $\ldots$''). Remember to check spelling. If
-your native language is not English, please get a native English-speaking
-colleague to carefully proofread your paper.
+These frameworks represent significant strides toward achieving holistic, human-competitive, and even superhuman capabilities in analog IC design.
 
-Try not to use too many typefaces in the same article. Also please remember that MathJax
-can't handle really weird typefaces.
+The main contributions of this paper are as follows:
+\begin{itemize}
+\item \textbf{Comprehensive Survey of Recent Advancements}: Examine and compare recent advancements in generative AI for analog circuit design, with a particular focus on evolving techniques that address topology exploration, scalable parameter sizing, robust PVT variations, and realistic layout parasitics.
+
+\item \textbf{Methodological Review of State-of-the-Art Techniques}: Provide a methodological review of state-of-the-art generative AI techniques applied in analog circuit design automation, including Graph Neural Networks (GNNs), Large Language Models (LLMs), and Variational Autoencoders (VAEs), showcasing their latest applications and interconnections.
+
+\item \textbf{Analysis of Novel Comprehensive Frameworks}: Integrate and analyze new, comprehensive frameworks such as FALCON, MenTeR, AnalogGenie, AnalogCoder, SPICEPilot, and AnalogXpert, which were not thoroughly covered in previous surveys, providing insights into their unique contributions and synergistic potential.
+
+\item \textbf{Practical Resource Compilation}: Collect and synthesize abundant resources, open-source codes, and application guidelines to serve as a practical reference for researchers new to or advancing within the field of analog circuit automation.
+\end{itemize}
+The remainder of this paper is structured as follows: section II summarizes and compares previous review papers in terms of their automation scope and the ML techniques covered, highlighting the gaps addressed by this work. section III introduces fundamental IC design challenges and outlines how these challenges shape the automation task for generative AI. section IV provides the fundamentals of generative AI relevant to recent research, including detailed discussions on GNNs, LLMs, and VAEs. section V comprehensively compares significant research works, focusing on their methodologies, key problems they attempt to solve, and their contributions to the evolving landscape of analog design automation. Finally, section VI outlines future research directions and challenges for large-scale industrial adoption, including discussions on multi-agent systems and multi-modal AI.
+
+%\subsection{Abbreviations and Acronyms}
+%Define abbreviations and acronyms the first time they are used in the text,
+%even after they have already been defined in the abstract. Abbreviations
+%such as IEEE, SI, ac, and dc do not have to be defined. Abbreviations that
+%incorporate periods should not have spaces: write ``C.N.R.S.,'' not ``C. N.
+%R. S.'' Do not use abbreviations in the title unless they are unavoidable
+%(for example, ``IEEE'' in the title of this article).
+
+%\subsection{Other Recommendations}
+%Use one space after periods and colons. Hyphenate complex modifiers:
+%``zero-field-cooled magnetization.'' Avoid dangling participles, such as,
+%``Using \eqref{eq}, the potential was calculated.'' [It is not clear who or what
+%used \eqref{eq}.] Write instead, ``The potential was calculated by using \eqref{eq},'' or
+%``Using \eqref{eq}, we calculated the potential.''
+
+%Use a zero before decimal points: ``0.25,'' not ``.25.'' Use
+%``cm$^{3}$,'' not ``cc.'' Indicate sample dimensions as ``0.1 cm
+%$\times $ 0.2 cm,'' not ``0.1 $\times $ 0.2 cm$^{2}$.'' The
+%abbreviation for ``seconds'' is ``s,'' not ``sec.'' Use
+%``Wb/m$^{2}$'' or ``webers per square meter,'' not
+%``webers/m$^{2}$.'' When expressing a range of values, write ``7 to
+%9'' or ``7--9,'' not ``7$\sim $9.''
+
+%A parenthetical statement at the end of a sentence is punctuated outside of
+%the closing parenthesis (like this). (A parenthetical sentence is punctuated
+%within the parentheses.) In American English, periods and commas are within
+%quotation marks, like ``this period.'' Other punctuation is ``outside''!
+%Avoid contractions; for example, write ``do not'' instead of ``don't.'' The
+%serial comma is preferred: ``A, B, and C'' instead of ``A, B and C.''
+
+%If you wish, you may write in the first person singular or plural and use
+%the active voice (``I observed that $\ldots$'' or ``We observed that $\ldots$''
+%instead of ``It was observed that $\ldots$''). Remember to check spelling. If
+%your native language is not English, please get a native English-speaking
+%colleague to carefully proofread your paper.
+
+%Try not to use too many typefaces in the same article. Also please remember that MathJax
+%can't handle really weird typefaces.
+
+
+
+\section{Related Works}
+Use either SI (MKS) or CGS as primary units. (SI units are strongly
+encouraged.) English units may be used as secondary units (in parentheses).
+This applies to papers in data storage. For example, write ``15
+Gb/cm$^{2}$ (100 Gb/in$^{2})$.'' An exception is when
+English units are used as identifiers in trade, such as ``3$^{1\!/\!2}$-in
+disk drive.'' Avoid combining SI and CGS units, such as current in amperes
+and magnetic field in oersteds. This often leads to confusion because
+equations do not balance dimensionally. If you must use mixed units, clearly
+state the units for each quantity in an equation.
+
+The SI unit for magnetic field strength $H$ is A/m. However, if you wish to use
+units of T, either refer to magnetic flux density $B$ or magnetic field
+strength symbolized as $\mu _{0}H$. Use the center dot to separate
+compound units, e.g., ``A$\cdot $m$^{2}$.''
 
 \subsection{Equations}
 Number equations consecutively with equation numbers in parentheses flush
@@ -179,26 +250,10 @@ will not stop equation numbers inside \verb|{array}| (there won't be
 any anyway) and it might stop a wanted equation number in the
 surrounding equation.
 
-\section{Units}
-Use either SI (MKS) or CGS as primary units. (SI units are strongly
-encouraged.) English units may be used as secondary units (in parentheses).
-This applies to papers in data storage. For example, write ``15
-Gb/cm$^{2}$ (100 Gb/in$^{2})$.'' An exception is when
-English units are used as identifiers in trade, such as ``3$^{1\!/\!2}$-in
-disk drive.'' Avoid combining SI and CGS units, such as current in amperes
-and magnetic field in oersteds. This often leads to confusion because
-equations do not balance dimensionally. If you must use mixed units, clearly
-state the units for each quantity in an equation.
 
-The SI unit for magnetic field strength $H$ is A/m. However, if you wish to use
-units of T, either refer to magnetic flux density $B$ or magnetic field
-strength symbolized as $\mu _{0}H$. Use the center dot to separate
-compound units, e.g., ``A$\cdot $m$^{2}$.''
-
-
-\Figure[t!](topskip=0pt, botskip=0pt, midskip=0pt){fig1.png}
+\Figure[t!](topskip=0pt, botskip=0pt, midskip=0pt){fig2.png}
 { \textbf{Magnetization as a function of applied field.
-It is good practice to explain the significance of the figure in the caption.}\label{fig1}}
+It is good practice to explain the significance of the figure in the caption.}\label{fig2}}
 
 \section{Some Common Mistakes}
 The word ``data'' is plural, not singular. The subscript for the
