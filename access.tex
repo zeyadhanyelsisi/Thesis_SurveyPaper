@@ -5,6 +5,9 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{hyperref}
+\usepackage{booktabs}  % For professional table lines
+\usepackage{array}     % For column width handling
+\usepackage{bookmark}
 
 \hypersetup{
     colorlinks=true,        % Enable colored links
@@ -118,6 +121,8 @@ Specifically, this review will integrate analysis of groundbreaking new framewor
 \item \textbf{MenTeR}: A fully-automated multi-agent workflow for end-to-end RF/Analog circuit netlist design, emphasizing specification understanding, collaborative optimization, and test bench validation through Chain-of-Stage reasoning and Diagram-Aware RAG.
 \item \textbf{FALCON}: A unified ML framework enabling fully automated, specification-driven analog circuit synthesis through performance-driven topology selection, GNN-based parameter inference, and layout-constrained optimization, validated with industrial-grade simulations.
 \item \textbf{AICircuit}: A multi-level dataset and benchmark that facilitates the development and evaluation of ML algorithms for both homogeneous and heterogeneous analog and RF circuit designs.
+\item \textbf{AMSNet}: A netlist dataset for Analog and Mixed-Signal (AMS) circuits, which consists of 734 topologies and has been utilized for LLM-based AMS circuit auto-design and netlist generation.
+\item \textbf{AnalogCoderPro}: A training-free, end-to-end multimodal LLM framework that unifies topology generation and device sizing. It advances AnalogCoder by incorporating a multimodal diagnosis-and-repair feedback loop that uses simulation logs and waveform images for autonomous error correction.
 \end{itemize}
 
 These frameworks represent significant strides toward achieving holistic, human-competitive, and even superhuman capabilities in analog IC design.
@@ -175,50 +180,66 @@ The remainder of this paper is structured as follows: section II summarizes and 
 
 
 
-\section{Related Works}
-Use either SI (MKS) or CGS as primary units. (SI units are strongly
-encouraged.) English units may be used as secondary units (in parentheses).
-This applies to papers in data storage. For example, write ``15
-Gb/cm$^{2}$ (100 Gb/in$^{2})$.'' An exception is when
-English units are used as identifiers in trade, such as ``3$^{1\!/\!2}$-in
-disk drive.'' Avoid combining SI and CGS units, such as current in amperes
-and magnetic field in oersteds. This often leads to confusion because
-equations do not balance dimensionally. If you must use mixed units, clearly
-state the units for each quantity in an equation.
+\section{Related Works and Survey Landscape}
+The rapid evolution of Artificial Intelligence (AI) and foundation models has spurred numerous systematic reviews aimed at capturing the state-of-the-art in Electronic Design Automation (EDA) "To add all previous survery papers".
 
-The SI unit for magnetic field strength $H$ is A/m. However, if you wish to use
-units of T, either refer to magnetic flux density $B$ or magnetic field
-strength symbolized as $\mu _{0}H$. Use the center dot to separate
-compound units, e.g., ``A$\cdot $m$^{2}$.''
+This section summarizes the scope of previous survey papers and highlights the critical gaps that this work addresses, particularly concerning the application of generative AI to the complex domain of analog integrated circuits (ICs).
 
-\subsection{Equations}
-Number equations consecutively with equation numbers in parentheses flush
-with the right margin, as in \eqref{eq}. To make your equations more
-compact, you may use the solidus (~/~), the exp function, or appropriate
-exponents. Use parentheses to avoid ambiguities in denominators. Punctuate
-equations when they are part of a sentence, as in
-\begin{equation}E=mc^2.\label{eq}\end{equation}
 
-The following 2 equations are used to test 
-your LaTeX compiler's math output. Equation (2) is your LaTeX compiler' output. Equation (3) is an image of what (2) should look like.
-Please make sure that your equation (2) matches (3) in terms of symbols and characters' font style (Ex: italic/roman).
+\subsection{Taxonomy of Prior AI for EDA Surveys}
+Existing reviews on AI for EDA can generally be categorized into two major types based on the AI paradigm they cover "A survey of circuit foundation models":
 
-\begin{align*} \frac{47i+89jk\times 10rym \pm 2npz }{(6XYZ\pi Ku) Aoq \sum _{i=1}^{r} Q(t)} {\int\limits_0^\infty \! f(g)\mathrm{d}x}  \sqrt[3]{\frac{abcdelqh^2}{ (svw) \cos^3\theta }} . \tag{2}\end{align*}
+\subsubsection{Supervised Predictive AI Techniques}
+This category represents the mainstream of earlier AI for EDA solutions "circuit foundation model, generative AI for analog IC", focusing on supervised predictive models tailored for specific tasks, such as early prediction of design quality metrics (e.g., timing, area, power).
+These works have been extensively studied and covered in earlier surveys "put all previous surveys". However, they often fall short in addressing the unique challenges of analog IC design, which requires more than just predictive accuracy. The need for creativity in topology generation and the handling of continuous parameter spaces are aspects that these surveys do not fully explore.
 
-$\hskip-7pt$\includegraphics[scale=0.52]{equation3.png}
+\subsubsection{Foundation AI Techniques (Circuit Foundation Models - CFMs)}
+This emerging trend focuses on models characterized by pre-training on large datasets followed by fine-tuning for specific applications, enhancing generalization and generative capabilities "put survey of circuit foundation models here".
+The concept of Circuit Foundation Models (CFMs) encompasses two primary approaches: encoder-based and decoder-based models. 
+Encoder-based models, such as Graph Neural Networks (GNNs), are adept at learning representations from graph-structured data, making them suitable for tasks like topology classification and parameter prediction. 
+Decoder-based models, including Variational Autoencoders (VAEs) and Large Language Models (LLMs), excel in generating new designs by learning the underlying distribution of existing circuits.
 
-Be sure that the symbols in your equation have been defined before the
-equation appears or immediately following. Italicize symbols ($T$ might refer
-to temperature, but T is the unit tesla). Refer to ``\eqref{eq},'' not ``Eq. \eqref{eq}''
-or ``equation \eqref{eq},'' except at the beginning of a sentence: ``Equation \eqref{eq}
-is $\ldots$ .''
+Most recent surveys on second type CFMs have primarily focused on decoder-based models, specifically Large Language Models (LLMs) for EDA "search of relevant papers in the survey paper". 
+This focus reflects the immense generative potential demonstrated by LLMs in areas like Hardware Description Language (HDL) code generation, verification, and debugging "search of relevant papers in the survey paper".
 
-\subsection{LaTeX-Specific Advice}
+\subsection{Comparison of Coverage and Gaps}
 
-Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
-of ``hard'' references (e.g., \verb|(1)|). That will make it possible
-to combine sections, add equations, or change the order of figures or
-citations without having to go through the file line by line.
+A direct comparison reveals that existing surveys often suffer from limitations in scope, depth of analog coverage, or model inclusivity "pick relevant papers from previous surveys".
+
+\begin{table}[h!]
+\caption{\textbf{Comparison of Survey Focus and Gaps}}
+\label{tab:survey_comparison}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{|p{35pt}|p{75pt}|p{105pt}|}
+\hline
+\textbf{Survey} & \textbf{ML/AI Techniques} & \textbf{Gaps Addressed} \\
+\hline
+\textbf{Traditional Analog Surveys} & 
+Bayesian Optimization (BO), \par Evolutionary Algorithms (EA), \par Deep Neural Networks (DNNs), \par Convolutional Neural Networks (CNNs) & 
+Lack coverage of generative AI \par (LLMs, VAEs) and end-to-end \par integration; often overlook \par post-layout effects \\
+\hline
+\textbf{LLM-EDA} & 
+Decoder LLMs & 
+Lacks encoders (GNNs); \par digital bias; limited \par analog focus \\
+\hline
+\textbf{Recent Perspectives} & 
+Encoder/Decoder LLMs & 
+Missing latest GenAI \& \par multi-agent analog \par applications \\
+\hline
+\end{tabular}
+\end{table}
+
+Specific Gaps in Previous Literature:
+\subsubsection{Model Inclusivity:} The majority of LLM-focused surveys covered only decoder-based LLMs. This survey, in contrast, incorporates both encoder-based GNNs (used for generalized circuit representation learning and predictive tasks like design quality evaluation) and decoder-based LLMs (used for generative tasks) into a unified CFM framework.
+\subsubsection{Analog Depth:} While analog design is briefly mentioned in some LLM surveys, they lack the depth required to address critical analog-specific challenges. Older analog-focused reviews often relied on manual feature extraction or overlooked post-layout performance, leading to performance mismatch issues. The need for joint optimization of sizing and layout to mitigate misleading results is critical.
+\subsubsection{Emerging Frameworks and Methodologies:} Previous surveys published prior to 2024 missed the analysis of ground-breaking generative and optimization frameworks essential for holistic analog design automation. This includes:
+
+    \begin{itemize}
+    \item \textbf{End-to-End Automation}: Comprehensive systems that integrate topology selection, sizing, and layout awareness were not widely covered. This survey introduces FALCON, a unified ML framework that achieves layout-constrained optimization validated against industrial-grade simulations.
+    \item \textbf{Multi-Agent and Feedback Systems}: The latest advancements involve intricate collaborative LLM agents. This work incorporates MenTeR, a multi-agent workflow for RF/Analog netlist design emphasizing specification understanding and Chain-of-Stage (CoS) reasoning, and AnalogXpert, which uses a proofreading strategy based on human experience for iterative error correction.
+    \item \textbf{Data Scarcity Solutions}: The systematic creation of large-scale, open-source datasets is vital. This review covers initiatives like AICircuit (for homogeneous and heterogeneous circuits), Masala-CHAI (a multimodal LLM-powered framework that generates large-scale SPICE netlists directly from circuit schematics, enabling automated dataset creation and benchmarking), and SPICE\-Pilot (LLM-generated SPICE datasets).
+    \end{itemize}
+By incorporating over 130 relevant works, spanning both predictive (encoder-based) and generative (decoder-based) methodologies, this survey provides a comprehensive collection of resources and application guidelines for researchers targeting industrial-scale analog IC design challenges.
 
 Please don't use the \verb|{eqnarray}| equation environment. Use
 \verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
