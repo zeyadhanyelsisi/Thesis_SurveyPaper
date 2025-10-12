@@ -45,7 +45,7 @@
 \doi{10.1109/ACCESS.2024.0429000}
 
 \title{Generative AI for Analog/RF Integrated Circuit Design and Netlist Synthesis: Evolving Methodologies and Emerging Applications}
-\author{\uppercase{Zeyad H. ElSisi}\authorrefmark{1}, \IEEEmembership{Fellow, IEEE},
+\author{\uppercase{Zeyad H. ElSisi}\authorrefmark{1},
 \uppercase{Heba M. Draz}\authorrefmark{2}, and Third C. Author,
 Jr.\authorrefmark{3},
 \IEEEmembership{Member, IEEE}}
@@ -230,15 +230,63 @@ Missing latest GenAI \& \par multi-agent analog \par applications \\
 \end{table}
 
 Specific Gaps in Previous Literature:
-\subsubsection{Model Inclusivity:} The majority of LLM-focused surveys covered only decoder-based LLMs. This survey, in contrast, incorporates both encoder-based GNNs (used for generalized circuit representation learning and predictive tasks like design quality evaluation) and decoder-based LLMs (used for generative tasks) into a unified CFM framework.
-\subsubsection{Analog Depth:} While analog design is briefly mentioned in some LLM surveys, they lack the depth required to address critical analog-specific challenges. Older analog-focused reviews often relied on manual feature extraction or overlooked post-layout performance, leading to performance mismatch issues. The need for joint optimization of sizing and layout to mitigate misleading results is critical.
-\subsubsection{Emerging Frameworks and Methodologies:} Previous surveys published prior to 2024 missed the analysis of ground-breaking generative and optimization frameworks essential for holistic analog design automation. This includes:
+
+\subsubsection{Model Inclusivity:} Model inclusivity addresses whether a survey covers the necessary range of AI paradigms critical for analog circuit automation, specifically encompassing both generative and predictive models.
+The majority of LLM-focused surveys covered only decoder-based LLMs. This survey, in contrast, incorporates both encoder-based GNNs (used for generalized circuit representation learning and predictive tasks like design quality evaluation) and decoder-based LLMs (used for generative tasks) into a unified CFM framework.
 
     \begin{itemize}
-    \item \textbf{End-to-End Automation}: Comprehensive systems that integrate topology selection, sizing, and layout awareness were not widely covered. This survey introduces FALCON, a unified ML framework that achieves layout-constrained optimization validated against industrial-grade simulations.
-    \item \textbf{Multi-Agent and Feedback Systems}: The latest advancements involve intricate collaborative LLM agents. This work incorporates MenTeR, a multi-agent workflow for RF/Analog netlist design emphasizing specification understanding and Chain-of-Stage (CoS) reasoning, and AnalogXpert, which uses a proofreading strategy based on human experience for iterative error correction.
-    \item \textbf{Data Scarcity Solutions}: The systematic creation of large-scale, open-source datasets is vital. This review covers initiatives like AICircuit (for homogeneous and heterogeneous circuits), Masala-CHAI (a multimodal LLM-powered framework that generates large-scale SPICE netlists directly from circuit schematics, enabling automated dataset creation and benchmarking), and SPICE\-Pilot (LLM-generated SPICE datasets).
+    \item \textbf{CFM Survey:} (to adjust the link) This work is highly model-inclusive. It systematically defines and categorizes all works within the foundation model paradigm into two primary types: encoder-based methods (which typically learn generalized representations for predictive tasks, e.g., Graph Neural Networks (GNNs)) and decoder-based methods (which leverage Large Language Models (LLMs) for generative tasks). This approach inherently covers the diverse model architectures used across the digital and analog EDA flows.
+
+    \item \textbf{LLM for EDA Survey (The Leak):} The primary limitation of this survey is its exclusive focus on Large Language Models (LLMs), which are decoder-based foundation models. This narrow scope results in a critical omission of foundational encoder-based methods. Many breakthroughs in analog automation rely on non-LLM techniques, such as Graph Neural Networks (GNNs) and Variational Autoencoders (VAEs), which are fundamental for tasks like parasitic modeling and topology generation (e.g., CktGNN). By concentrating solely on LLMs, this survey overlooks a substantial and active segment of foundational analog AI research.
+
+    \item \textbf{Analog AI Survey:} This paper aims to provide a comprehensive methodological review encompassing GNNs, LLMs, and VAEs as applied to analog circuit sizing and automation.
     \end{itemize}
+
+\subsubsection{Analog Depth:} Analog circuit design poses unique challenges, such as complexity due to diverse components, intricate interconnections, and the necessity of direct device-level representation, unlike the high-level abstraction available in digital design.
+
+\begin{itemize}
+    \item \textbf{AnalogGenAI Survey}: The AnalogGenAI survey offers the deepest focus, dedicated entirely to analog IC design methodologies and applications. It effectively highlights core analog challenges including data scarcity, topology exploration, PVT variations, and layout parasitics. This survey is particularly rich in techniques for circuit sizing, reinforcement learning, and layout-aware automation. However, much of the research discussed focuses on relatively simple circuits like Op-Amps, with complex systems such as PLLs and power amplifiers being comparatively underexplored.
+    \item \textbf{CFM and LLM4EDA Surveys}: Both CFM and LLM4EDA dedicate sections to analog circuits. The CFM survey lists recent works like AnalogGenie, AnalogCoder, and LaMAGIC. The LLM4EDA survey details contributions in initial specification/topology selection, schematic design/simulation (e.g., AnalogCoder, ADO-LLM, LaMAGIC), and layout design (e.g., LLANA, LayoutCopilot).
+\end{itemize}
+
+\textbf{Gap and Contribution:} While previous surveys acknowledge the analog domain, detailed coverage of advanced generative capabilities, especially those focusing on scalable and flexible topology discovery, is often summarized. Our survey will emphasize recent breakthroughs that address fundamental analog design difficulties:
+\begin{itemize}
+\item \textbf{Scalable Topology Discovery}: We highlight approaches like AnalogGenie, which addresses scalable and general analog design by broadening the variety of ICs and increasing device counts. AnalogGenie introduces a sequence-based, pin-level graph representation to efficiently capture large analog circuit topologies, enabling the discovery of diverse and unseen topologies.
+\item \textbf{Practical Topology Synthesis}: We examine specialized LLM agents like AnalogXpert, which moves toward practical topology synthesis by formulating it as a subcircuit-level SPICE code generation problem. AnalogXpert achieves significantly higher success rates (40\% on synthetic data, 23\% on real data) compared to baselines like AnalogCoder (8\% and 6\%, respectively) due to its use of a subcircuit library and a human experience-based proofreading strategy.
+\end{itemize}
+
+\subsubsection{Emerging Frameworks and Methodologies} Despite the advancements in analog design automation, several challenges remain unaddressed. These include:
+
+    \begin{itemize}
+    \item \textbf{End-to-End Automation}: End-to-end automation, spanning from specifications to layout-aware netlists, is identified as a critical future direction across all three existing surveys.
+    \newline
+    \textbf{Gap and Contribution:} The current literature often tackles topology generation and parameter optimization as separate, sequential stages, which can lead to suboptimal results when inherent topological constraints are ignored during sizing. Our survey highlights new efforts that unify these stages:
+    \begin{itemize}
+        \item \textbf{Unified Generation and Optimization}: AnalogCoder-Pro is introduced as a training-free, multimodal LLM framework designed for end-to-end analog circuit design, jointly performing topology generation and device sizing. It focuses on transforming natural-language design objectives into optimized netlists.
+        \item \textbf{Layout-Constrained Synthesis}: FALCON unifies topology selection, parameter inference, and layout-aware optimization in a single end-to-end pipeline. It guides parameter inference using a differentiable layout cost, integrating schematic and physical considerations.
+    \end{itemize}
+    \item \textbf{Multi-Agent and Feedback Systems}: The use of autonomous agents and sophisticated feedback loops is crucial for handling the complexity and iterative nature of analog design.
+    \newline
+    The LLM4EDA survey notes the trend toward LLM autonomous agents that iteratively improve code quality by incorporating feedback. It specifically mentions LayoutCopilot as an LLM-powered multi-agent collaborative framework for analog layout design. AnalogCoder employs a feedback-enhanced design flow to refine generated circuits based on functional checks and simulation results.
+    \newline
+    \textbf{Gap and Contribution:} Recent advancements incorporate multi-modal inputs and highly specialized agents to improve robustness and efficiency beyond basic feedback loops:
+        \begin{itemize}
+        \item \textbf{Multi-Modal Diagnosis:}:AnalogCoder-Pro advances the feedback loop by incorporating a multimodal diagnosis-and-repair feedback loop that utilizes simulation error messages and waveform images to autonomously correct design errors.
+        \item \textbf{Specialized Multi-Agent Systems:} MenTeR proposes a fully-automated multi-agent workflow integrated into an end-to-end analog design framework. It uses specialized agents for specification understanding, design refinement via Chain-of-Stage (CoS) reasoning, and diagram-aware retrieval, demonstrating significant performance improvements over single-agent approaches, even tackling complex circuits like the CMOS Bandgap Reference. Similarly, AmpAgent is an LLM-based multi-agent system specifically for multi-stage amplifier schematic design.
+    \end{itemize}
+    \item \textbf{Data Scarcity Solutions}: The lack of large, high-quality, and publicly available analog circuit datasets remains a fundamental bottleneck.
+    \newline
+    All three existing surveys recognize this challenge. The CFM survey explicitly discusses synthetic dataset generation and advanced data augmentation techniques as necessary paths forward. The AnalogGenAI survey advocates for the creation of open-source datasets and testbenches like AICircuit.
+    \newline
+    \textbf{Gap and Contribution:} Our survey highlights critical recent efforts focused on generating large-scale, automated, and multi-modal analog datasets, which are essential for training robust foundation models.
+    \begin{itemize}
+        \item \textbf{Generative Dataset Creation:} We discuss new automated frameworks designed to extract data at scale. AnalogGenie addressed this gap by building an extensive dataset of over 3,000 distinct analog circuit topologies with diverse functionalities, expanded by over 70x using data augmentation.
+        \item \textbf{Automated Schematic-to-Netlist Extraction:} We review frameworks dedicated to overcoming the image-to-netlist conversion barrier. Masala-CHAI is a fully automated framework leveraging LLMs and custom deep network models to generate SPICE netlists from schematic images, resulting in the largest curated open-source dataset of $\sim$7,500 SPICE netlists from textbooks. Similarly, AMSnet 2.0 uses deep-learning-based image instance segmentation for robust net detection to generate netlists and subsequently reconstruct digital schematics, overcoming the limitations of previous heuristic methods on noisy schematics. These tools directly address the deficiency of SPICE netlist data compared to digital HDL code and and SPICE\-Pilot (LLM-generated SPICE datasets).
+    \end{itemize}
+    \end{itemize}
+
+By focusing on these specific advancements—particularly the deep integration of multi-modal data, multi-agent reasoning, unified topology-sizing optimization, and large-scale dataset generation—our survey provides a current and comprehensive understanding of the Generative AI landscape for complex analog circuit design, building upon and extending the scope of the existing literature.
+
 By incorporating over 130 relevant works, spanning both predictive (encoder-based) and generative (decoder-based) methodologies, this survey provides a comprehensive collection of resources and application guidelines for researchers targeting industrial-scale analog IC design challenges.
 
 Please don't use the \verb|{eqnarray}| equation environment. Use
