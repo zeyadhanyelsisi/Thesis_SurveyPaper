@@ -67,7 +67,6 @@
 
 \corresp{Corresponding author: First A. Author (e-mail: author@ boulder.nist.gov).}
 
-
 \begin{abstract}
 	Electronic Design Automation (EDA) in analog Integrated Circuits (ICs) continues to be a critical research area, yet its widespread adoption significantly lags behind its digital counterpart due to inherent complexities. This extended systematic review updates recent contributions in the last five years, specifically highlighting cutting-edge methods that address persistent domain-specific challenges such as data scarcity, efficient topology exploration, robust parameter optimization considering process-voltage-temperature (PVT) variations, and accurate layout parasitic management.
 	Our primary objective is to equip researchers new to this rapidly evolving domain with a comprehensive collection of references, a refined understanding of current challenges, and practical application guidelines. We provide an in-depth methodological review of state-of-the-art machine learning (ML) and generative AI approaches—including Graph Neural Networks (GNNs), Large Language Models (LLMs), and Variational Autoencoders (VAEs)—which are increasingly applied across various analog circuit design tasks, from topology synthesis to parameter sizing and validation.
@@ -88,20 +87,66 @@
 \PARstart{T}{he} escalating complexity and diverse performance requirements of modern analog systems underpin advancements in crucial technologies such as generative AI, 5G/6G communication, and quantum computing. \textit{"analog genie"}
 These demands necessitate full-flow automation to effectively manage the intricate trade-offs between numerous performance parameters, a task where traditional manual approaches are notoriously time-consuming and heavily reliant on scarce expert knowledge. While digital design automation has witnessed extensive development and widespread adoption across both industry and academia, the automation of analog IC design continues to face significant challenges.
 
-Researchers have made concerted efforts to automate various stages of the analog design flow\textit{"genAI paper"}. Conventionally, the process is segmented into three primary areas at the circuit level: topology selection, circuit sizing, and layout generation, often with complex feedback loops, as clearly shown in Fig.~\ref{fig1}.
-Although remarkable progress has been achieved in layout generation tools, such as MAGICAL and ALIGN, and in certain aspects of digital IC design with generative AI, the development of scalable and robust solutions for analog circuit sizing and comprehensive topology design remains a formidable challenge.
-Furthermore, a truly practical automation flow at each stage must inherently account for the interdependencies across design stages\textit{"5,6,7 from genAI paper"}; for instance, the initial selection of a topology must proactively consider potential layout parasitics and their subsequent impact on performance metrics.
+Researchers have made concerted efforts to automate various stages of the
+analog design flow\textit{"genAI paper"}. Conventionally, the process is
+segmented into three primary areas at the circuit level: topology selection,
+circuit sizing, and layout generation, often with complex feedback loops, as
+clearly shown in Fig.~\ref{fig1}. Although remarkable progress has been
+achieved in layout generation tools, such as MAGICAL and ALIGN, and in certain
+aspects of digital IC design with generative AI, the development of scalable
+and robust solutions for analog circuit sizing and comprehensive topology
+design remains a formidable challenge. Furthermore, a truly practical
+automation flow at each stage must inherently account for the interdependencies
+across design stages\textit{"5,6,7 from genAI paper"}; for instance, the
+initial selection of a topology must proactively consider potential layout
+parasitics and their subsequent impact on performance metrics.
 
-The fundamental challenge arises from the intricate design complexities of analog ICs. Unlike digital ICs that can be universally and hierarchically abstracted into Boolean logic representations and easily described with high-level hardware description languages (e.g., Verilog and VHDL) or programming languages (e.g., C), analog ICs remain intractable to such abstraction due to their
-lack of systematic hierarchical representation and the heuristic and knowledge-intensive nature of their design process~\cite{b1}. This makes automating analog IC design using programming languages similar to those for digital ICs extremely difficult. As such, domain experts have followed a longstanding manual flow to design analog ICs. This process involves a number of time-consuming stages, such as selecting/creating an existing (new) circuit topology (i.e., defining the connections between devices), optimizing device parameters based on the topology to achieve desired performance, and designing the physical layout of the optimized circuit for manufacturing. Importantly, the topology generation stage is the foundation and most creative part of the analog IC design process, posing a formidable and perennial challenge to design automation. Addressing it is the key to accelerating the development of analog ICs.
+The fundamental challenge arises from the intricate design complexities of
+analog ICs. Unlike digital ICs that can be universally and hierarchically
+abstracted into Boolean logic representations and easily described with
+high-level hardware description languages (e.g., Verilog and VHDL) or
+programming languages (e.g., C), analog ICs remain intractable to such
+abstraction due to their lack of systematic hierarchical representation and the
+heuristic and knowledge-intensive nature of their design process~\cite{b1}.
+This makes automating analog IC design using programming languages similar to
+those for digital ICs extremely difficult. As such, domain experts have
+followed a longstanding manual flow to design analog ICs. This process involves
+a number of time-consuming stages, such as selecting/creating an existing (new)
+circuit topology (i.e., defining the connections between devices), optimizing
+device parameters based on the topology to achieve desired performance, and
+designing the physical layout of the optimized circuit for manufacturing.
+Importantly, the topology generation stage is the foundation and most creative
+part of the analog IC design process, posing a formidable and perennial
+challenge to design automation. Addressing it is the key to accelerating the
+development of analog ICs.
 
-In response to these challenges, machine learning (ML) has emerged as a promising solution. Learning-based methods, which leverage simulation data for training, offer more efficient design space exploration.
-ML techniques can be applied individually or in combination to facilitate decision-making, function approximation, and black-box optimization. Recent breakthroughs in generative AI, a subset of ML, have presented transformative opportunities to expedite these conventional design flows.
-Models such as Graph Neural Networks (GNNs) have shown significant advantages for handling graph-structured circuit data, while Variational Autoencoders (VAEs) are being explored to learn underlying data distributions for tasks like topology optimization. Furthermore, Large Language Models (LLMs), traditionally used for natural language processing, have demonstrated remarkable adaptability to large-scale design problems, including layout automation, optimization, and topology generation.
+In response to these challenges, machine learning (ML) has emerged as a
+promising solution. Learning-based methods, which leverage simulation data for
+training, offer more efficient design space exploration. ML techniques can be
+applied individually or in combination to facilitate decision-making, function
+approximation, and black-box optimization. Recent breakthroughs in generative
+AI, a subset of ML, have presented transformative opportunities to expedite
+these conventional design flows. Models such as Graph Neural Networks (GNNs)
+have shown significant advantages for handling graph-structured circuit data,
+while Variational Autoencoders (VAEs) are being explored to learn underlying
+data distributions for tasks like topology optimization. Furthermore, Large
+Language Models (LLMs), traditionally used for natural language processing,
+have demonstrated remarkable adaptability to large-scale design problems,
+including layout automation, optimization, and topology generation.
 
-Despite these advances, many prior studies on ML-driven analog circuit design have often focused on isolated sub-tasks or simple, homogeneous circuits, overlooking the complexities of real-world heterogeneous systems. \textit{"AI Circuit, }
-The persistent lack of comprehensive, generic, and diverse datasets with robust metrics has been a major impediment to thoroughly evaluating and improving ML algorithms in the analog domain. Moreover, many early generative AI approaches for topology generation were limited in scale, producing single types of small or conventional ICs, or suffered from ambiguous representations.
-This has encouraged the recent works to try bridging these gaps by proposing more holistic frameworks that integrate multiple design stages, leverage multi-agent systems, and incorporate layout-aware optimization to better reflect practical design scenarios. \textit{"AI Circuit, FALCON, MenTeR "ADO-LLM", "Analog-GENIE", "AMP-AGENT"}
+Despite these advances, many prior studies on ML-driven analog circuit design
+have often focused on isolated sub-tasks or simple, homogeneous circuits,
+overlooking the complexities of real-world heterogeneous systems. \textit{"AI
+	Circuit, } The persistent lack of comprehensive, generic, and diverse datasets
+with robust metrics has been a major impediment to thoroughly evaluating and
+improving ML algorithms in the analog domain. Moreover, many early generative
+AI approaches for topology generation were limited in scale, producing single
+types of small or conventional ICs, or suffered from ambiguous representations.
+This has encouraged the recent works to try bridging these gaps by proposing
+more holistic frameworks that integrate multiple design stages, leverage
+multi-agent systems, and incorporate layout-aware optimization to better
+reflect practical design scenarios. \textit{"AI Circuit, FALCON, MenTeR
+	"ADO-LLM", "Analog-GENIE", "AMP-AGENT"}
 
 \begin{figure}[h!]
 	\centering
@@ -110,8 +155,13 @@ This has encouraged the recent works to try bridging these gaps by proposing mor
 	\label{fig1}
 \end{figure}
 
-This paper aims to bridge these gaps by providing an updated and expanded systematic review of generative AI applications in analog IC design. We particularly focus on recent developments that push the boundaries of automation across the entire design pipeline, addressing shortcomings such as data scarcity, limited scalability, and inadequate layout awareness.
-Specifically, this review will integrate analysis of groundbreaking new frameworks like:
+This paper aims to bridge these gaps by providing an updated and expanded
+systematic review of generative AI applications in analog IC design. We
+particularly focus on recent developments that push the boundaries of
+automation across the entire design pipeline, addressing shortcomings such as
+data scarcity, limited scalability, and inadequate layout awareness.
+Specifically, this review will integrate analysis of groundbreaking new
+frameworks like:
 
 \begin{itemize}
 	\item \textbf{AnalogGenie}: A generative engine focused on the automatic discovery of diverse, large, and unseen analog circuit topologies using a scalable sequence-based graph representation and an augmented dataset.
@@ -125,7 +175,8 @@ Specifically, this review will integrate analysis of groundbreaking new framewor
 	\item \textbf{AnalogCoderPro}: A training-free, end-to-end multimodal LLM framework that unifies topology generation and device sizing. It advances AnalogCoder by incorporating a multimodal diagnosis-and-repair feedback loop that uses simulation logs and waveform images for autonomous error correction.
 \end{itemize}
 
-These frameworks represent significant strides toward achieving holistic, human-competitive, and even superhuman capabilities in analog IC design.
+These frameworks represent significant strides toward achieving holistic,
+human-competitive, and even superhuman capabilities in analog IC design.
 
 The main contributions of this paper are as follows:
 \begin{itemize}
@@ -178,33 +229,56 @@ The remainder of this paper is structured as follows: section II summarizes and 
 %Try not to use too many typefaces in the same article. Also please remember that MathJax
 %can't handle really weird typefaces.
 
-
-
 \section{Related Works and Survey Landscape}
-The rapid evolution of Artificial Intelligence (AI) and foundation models has spurred numerous systematic reviews aimed at capturing the state-of-the-art in Electronic Design Automation (EDA) "To add all previous survery papers".
+The rapid evolution of Artificial Intelligence (AI) and foundation models has
+spurred numerous systematic reviews aimed at capturing the state-of-the-art in
+Electronic Design Automation (EDA) "To add all previous survery papers".
 
-This section summarizes the scope of previous survey papers and highlights the critical gaps that this work addresses, particularly concerning the application of generative AI to the complex domain of analog integrated circuits (ICs).
-
+This section summarizes the scope of previous survey papers and highlights the
+critical gaps that this work addresses, particularly concerning the application
+of generative AI to the complex domain of analog integrated circuits (ICs).
 
 \subsection{Taxonomy of Prior AI for EDA Surveys}
-Existing reviews on AI for EDA can generally be categorized into two major types based on the AI paradigm they cover "A survey of circuit foundation models":
+Existing reviews on AI for EDA can generally be categorized into two major
+types based on the AI paradigm they cover "A survey of circuit foundation
+models":
 
 \subsubsection{Supervised Predictive AI Techniques}
-This category represents the mainstream of earlier AI for EDA solutions "circuit foundation model, generative AI for analog IC", focusing on supervised predictive models tailored for specific tasks, such as early prediction of design quality metrics (e.g., timing, area, power).
-These works have been extensively studied and covered in earlier surveys "put all previous surveys". However, they often fall short in addressing the unique challenges of analog IC design, which requires more than just predictive accuracy. The need for creativity in topology generation and the handling of continuous parameter spaces are aspects that these surveys do not fully explore.
+This category represents the mainstream of earlier AI for EDA solutions
+"circuit foundation model, generative AI for analog IC", focusing on supervised
+predictive models tailored for specific tasks, such as early prediction of
+design quality metrics (e.g., timing, area, power). These works have been
+extensively studied and covered in earlier surveys "put all previous surveys".
+However, they often fall short in addressing the unique challenges of analog IC
+design, which requires more than just predictive accuracy. The need for
+creativity in topology generation and the handling of continuous parameter
+spaces are aspects that these surveys do not fully explore.
 
 \subsubsection{Foundation AI Techniques (Circuit Foundation Models - CFMs)}
-This emerging trend focuses on models characterized by pre-training on large datasets followed by fine-tuning for specific applications, enhancing generalization and generative capabilities "put survey of circuit foundation models here".
-The concept of Circuit Foundation Models (CFMs) encompasses two primary approaches: encoder-based and decoder-based models.
-Encoder-based models, such as Graph Neural Networks (GNNs), are adept at learning representations from graph-structured data, making them suitable for tasks like topology classification and parameter prediction.
-Decoder-based models, including Variational Autoencoders (VAEs) and Large Language Models (LLMs), excel in generating new designs by learning the underlying distribution of existing circuits.
+This emerging trend focuses on models characterized by pre-training on large
+datasets followed by fine-tuning for specific applications, enhancing
+generalization and generative capabilities "put survey of circuit foundation
+models here". The concept of Circuit Foundation Models (CFMs) encompasses two
+primary approaches: encoder-based and decoder-based models. Encoder-based
+models, such as Graph Neural Networks (GNNs), are adept at learning
+representations from graph-structured data, making them suitable for tasks like
+topology classification and parameter prediction. Decoder-based models,
+including Variational Autoencoders (VAEs) and Large Language Models (LLMs),
+excel in generating new designs by learning the underlying distribution of
+existing circuits.
 
-Most recent surveys on second type CFMs have primarily focused on decoder-based models, specifically Large Language Models (LLMs) for EDA "search of relevant papers in the survey paper".
-This focus reflects the immense generative potential demonstrated by LLMs in areas like Hardware Description Language (HDL) code generation, verification, and debugging "search of relevant papers in the survey paper".
+Most recent surveys on second type CFMs have primarily focused on decoder-based
+models, specifically Large Language Models (LLMs) for EDA "search of relevant
+papers in the survey paper". This focus reflects the immense generative
+potential demonstrated by LLMs in areas like Hardware Description Language
+(HDL) code generation, verification, and debugging "search of relevant papers
+in the survey paper".
 
 \subsection{Comparison of Coverage and Gaps}
 
-A direct comparison reveals that existing surveys often suffer from limitations in scope, depth of analog coverage, or model inclusivity "pick relevant papers from previous surveys".
+A direct comparison reveals that existing surveys often suffer from limitations
+in scope, depth of analog coverage, or model inclusivity "pick relevant papers
+from previous surveys".
 
 \begin{table}[h!]
 	\caption{\textbf{Comparison of Survey Focus and Gaps}}
@@ -212,27 +286,24 @@ A direct comparison reveals that existing surveys often suffer from limitations 
 	\setlength{\tabcolsep}{3pt}
 	\begin{tabular}{|p{35pt}|p{75pt}|p{105pt}|}
 		\hline
-		\textbf{Survey}                                                                                                                            & \textbf{ML/AI Techniques} & \textbf{Gaps Addressed} \\
+		\textbf{Survey}                                                                                                                            & \textbf{ML/AI Techniques}                                                                                                 & \textbf{Gaps Addressed} \\
 		\hline
 		\textbf{Traditional Analog Surveys}                                                                                                        &
-		Bayesian Optimization (BO), \par Evolutionary Algorithms (EA), \par Deep Neural Networks (DNNs), \par Convolutional Neural Networks (CNNs) &
-		Lack coverage of generative AI \par (LLMs, VAEs) and end-to-end \par integration; often overlook \par post-layout effects                                                                        \\
-		\hline
-		\textbf{LLM-EDA}                                                                                                                           &
-		Decoder LLMs                                                                                                                               &
-		Lacks encoders (GNNs); \par digital bias; limited \par analog focus                                                                                                                              \\
-		\hline
-		\textbf{Recent Perspectives}                                                                                                               &
-		Encoder/Decoder LLMs                                                                                                                       &
-		Missing latest GenAI \& \par multi-agent analog \par applications                                                                                                                                \\
-		\hline
+		Bayesian Optimization (BO), \par Evolutionary Algorithms (EA), \par Deep Neural Networks (DNNs), \par Convolutional Neural Networks (CNNs) & Lack coverage of generative AI \par (LLMs, VAEs) and end-to-end \par integration; often overlook \par post-layout effects                           \\ \hline \textbf{LLM-EDA} & Decoder LLMs & Lacks encoders
+		(GNNs); \par digital bias; limited \par analog focus                                                                                                                                                                                                                                             \\ \hline \textbf{Recent Perspectives} & Encoder/Decoder LLMs &
+		Missing latest GenAI \& \par multi-agent analog \par applications                                                                                                                                                                                                                                \\ \hline
 	\end{tabular}
 \end{table}
 
 Specific Gaps in Previous Literature:
 
-\subsubsection{Model Inclusivity:} Model inclusivity addresses whether a survey covers the necessary range of AI paradigms critical for analog circuit automation, specifically encompassing both generative and predictive models.
-The majority of LLM-focused surveys covered only decoder-based LLMs. This survey, in contrast, incorporates both encoder-based GNNs (used for generalized circuit representation learning and predictive tasks like design quality evaluation) and decoder-based LLMs (used for generative tasks) into a unified CFM framework.
+\subsubsection{Model Inclusivity:} Model inclusivity addresses whether a survey covers the necessary range of AI
+paradigms critical for analog circuit automation, specifically encompassing
+both generative and predictive models. The majority of LLM-focused surveys
+covered only decoder-based LLMs. This survey, in contrast, incorporates both
+encoder-based GNNs (used for generalized circuit representation learning and
+predictive tasks like design quality evaluation) and decoder-based LLMs (used
+for generative tasks) into a unified CFM framework.
 
 \begin{itemize}
 	\item \textbf{CFM Survey:} (to adjust the link) This work is highly model-inclusive. It systematically defines and categorizes all works within the foundation model paradigm into two primary types: encoder-based methods (which typically learn generalized representations for predictive tasks, e.g., Graph Neural Networks (GNNs)) and decoder-based methods (which leverage Large Language Models (LLMs) for generative tasks). This approach inherently covers the diverse model architectures used across the digital and analog EDA flows.
@@ -242,7 +313,10 @@ The majority of LLM-focused surveys covered only decoder-based LLMs. This survey
 	\item \textbf{Analog AI Survey:} This paper aims to provide a comprehensive methodological review encompassing GNNs, LLMs, and VAEs as applied to analog circuit sizing and automation.
 \end{itemize}
 
-\subsubsection{Analog Depth:} Analog circuit design poses unique challenges, such as complexity due to diverse components, intricate interconnections, and the necessity of direct device-level representation, unlike the high-level abstraction available in digital design.
+\subsubsection{Analog Depth:} Analog circuit design poses unique challenges, such as complexity due to
+diverse components, intricate interconnections, and the necessity of direct
+device-level representation, unlike the high-level abstraction available in
+digital design.
 
 \begin{itemize}
 	\item \textbf{AnalogGenAI Survey}: The AnalogGenAI survey offers the deepest focus, dedicated entirely to analog IC design methodologies and applications. It effectively highlights core analog challenges including data scarcity, topology exploration, PVT variations, and layout parasitics. This survey is particularly rich in techniques for circuit sizing, reinforcement learning, and layout-aware automation. However, much of the research discussed focuses on relatively simple circuits like Op-Amps, with complex systems such as PLLs and power amplifiers being comparatively underexplored.
@@ -255,7 +329,8 @@ The majority of LLM-focused surveys covered only decoder-based LLMs. This survey
 	\item \textbf{Practical Topology Synthesis}: We examine specialized LLM agents like AnalogXpert, which moves toward practical topology synthesis by formulating it as a subcircuit-level SPICE code generation problem. AnalogXpert achieves significantly higher success rates (40\% on synthetic data, 23\% on real data) compared to baselines like AnalogCoder (8\% and 6\%, respectively) due to its use of a subcircuit library and a human experience-based proofreading strategy.
 \end{itemize}
 
-\subsubsection{Emerging Frameworks and Methodologies} Despite the advancements in analog design automation, several challenges remain unaddressed. These include:
+\subsubsection{Emerging Frameworks and Methodologies} Despite the advancements in analog design automation, several challenges remain
+unaddressed. These include:
 
 \begin{itemize}
 	\item \textbf{End-to-End Automation}: End-to-end automation, spanning from specifications to layout-aware netlists, is identified as a critical future direction across all three existing surveys.
@@ -285,16 +360,33 @@ The majority of LLM-focused surveys covered only decoder-based LLMs. This survey
 	      \end{itemize}
 \end{itemize}
 
-By focusing on these specific advancements—particularly the deep integration of multi-modal data, multi-agent reasoning, unified topology-sizing optimization, and large-scale dataset generation—our survey provides a current and comprehensive understanding of the Generative AI landscape for complex analog circuit design, building upon and extending the scope of the existing literature.
+By focusing on these specific advancements—particularly the deep integration of
+multi-modal data, multi-agent reasoning, unified topology-sizing optimization,
+and large-scale dataset generation—our survey provides a current and
+comprehensive understanding of the Generative AI landscape for complex analog
+circuit design, building upon and extending the scope of the existing
+literature.
 
-By incorporating over 130 relevant works, spanning both predictive (encoder-based) and generative (decoder-based) methodologies, this survey provides a comprehensive collection of resources and application guidelines for researchers targeting industrial-scale analog IC design challenges.
+By incorporating over 130 relevant works, spanning both predictive
+(encoder-based) and generative (decoder-based) methodologies, this survey
+provides a comprehensive collection of resources and application guidelines for
+researchers targeting industrial-scale analog IC design challenges.
 
 \section{Fundamental Analog IC Design Challenges}
 
-The quest for automating Analog Integrated Circuit (IC) design is obstructed by several foundational challenges inherent to continuous-signal processing, which contrast sharply with the structured nature of digital design. These challenges drive the complexity of the design cycle and necessitate advanced generative AI solutions.
+The quest for automating Analog Integrated Circuit (IC) design is obstructed by
+several foundational challenges inherent to continuous-signal processing, which
+contrast sharply with the structured nature of digital design. These challenges
+drive the complexity of the design cycle and necessitate advanced generative AI
+solutions.
 
 \subsection{Design Stages: Topology Selection, Circuit Sizing, and Layout Generation}
-The conventional manual flow segments the design into three critical, tightly coupled stages: topology selection, circuit sizing (parameter inference), and layout generation. A persistent challenge is the inherent strong interdependency across these stages. The performance of a circuit hinges on the topological choices, parameter values, and eventual physical implementation, where optimization in one stage often restricts success in the next.
+The conventional manual flow segments the design into three critical, tightly
+coupled stages: topology selection, circuit sizing (parameter inference), and
+layout generation. A persistent challenge is the inherent strong
+interdependency across these stages. The performance of a circuit hinges on the
+topological choices, parameter values, and eventual physical implementation,
+where optimization in one stage often restricts success in the next.
 
 \begin{enumerate}
 	\item \textbf{Topology Selection and Synthesis:} This is widely regarded as the most creative and challenging initial phase. Automation efforts must overcome the immense design space and the lack of a universal, scalable representation method for circuits. Frameworks like AnalogGenie address this by proposing models that can automatically discover diverse, large, and previously unseen circuit topologies.
@@ -305,7 +397,9 @@ The conventional manual flow segments the design into three critical, tightly co
 \end{enumerate}
 
 \subsection{Intricate Trade-offs and Non-Linearity}
-Analog circuits must successfully navigate numerous, often contradictory, performance requirements simultaneously, such as Power, Performance, Area (PPA), in addition to noise, gain, and linearity.
+Analog circuits must successfully navigate numerous, often contradictory,
+performance requirements simultaneously, such as Power, Performance, Area
+(PPA), in addition to noise, gain, and linearity.
 
 \begin{enumerate}
 	\item \textbf{Conflicting Metrics and Application Specificity:} Improving one metric often degrades another (e.g., increasing device size improves noise performance but increases parasitics and reduces speed). Moreover, analog IC design is highly application-specific, relying on designer intuition to define context-dependent Figures of Merit (FoM) and acceptable compromises.
@@ -314,7 +408,8 @@ Analog circuits must successfully navigate numerous, often contradictory, perfor
 \end{enumerate}
 
 \subsection{Abstraction Gap and Design Complexity}
-Analog circuits exhibit a fundamental complexity rooted in the continuous nature of signals and their low-level representation:
+Analog circuits exhibit a fundamental complexity rooted in the continuous
+nature of signals and their low-level representation:
 
 \begin{enumerate}
 	\item \textbf{Low-Level Representation:} Unlike digital circuits, which can be abstracted hierarchically into Boolean logic using high-level Hardware Description Languages (HDLs), analog circuits resist such simplification. Analog design inherently operates at the device level. Even basic functions, such as an analog adder, require explicit configuration and wiring of multiple MOSFETs and resistors, unlike a succinct digital implementation.
@@ -325,7 +420,8 @@ Analog circuits exhibit a fundamental complexity rooted in the continuous nature
 \end{enumerate}
 
 \subsection{Data Scarcity and Acquisition Bottleneck}
-The scarcity of large, comprehensive analog circuit datasets is a severe barrier to applying generative AI methods.
+The scarcity of large, comprehensive analog circuit datasets is a severe
+barrier to applying generative AI methods.
 
 \begin{enumerate}
 	\item \textbf{Proprietary Data and Language Scarcity:} Semiconductor companies protect proprietary designs, leading to few publicly available datasets. Furthermore, SPICE (Simulation Program with Integrated Circuit Emphasis), the predominant language for analog netlists, has a much smaller footprint in public code repositories compared to digital HDLs (like Verilog), complicating LLM domain learning.
@@ -343,10 +439,16 @@ The scarcity of large, comprehensive analog circuit datasets is a severe barrier
 \end{enumerate}
 
 \subsection{PVT Variations and Robustness}
-Analog designs must be robust against Process, Voltage, and Temperature (PVT) variations. A design optimized under nominal conditions may fail under worst-case scenarios, necessitating computationally expensive PVT corner analysis to ensure design viability.
+Analog designs must be robust against Process, Voltage, and Temperature (PVT)
+variations. A design optimized under nominal conditions may fail under
+worst-case scenarios, necessitating computationally expensive PVT corner
+analysis to ensure design viability.
 
 \subsection{Layout Parasitics and Physical Awareness}
-The transition from schematic-level design to physical layout introduces parasitic effects that critically influence performance, especially in high-frequency (RF/mm-wave) and advanced technology nodes. Ignoring these effects leads to schematic-to-layout mismatch.
+The transition from schematic-level design to physical layout introduces
+parasitic effects that critically influence performance, especially in
+high-frequency (RF/mm-wave) and advanced technology nodes. Ignoring these
+effects leads to schematic-to-layout mismatch.
 
 \begin{enumerate}
 	\item \textbf{Unified Layout Constraints:} The FALCON framework unifies the schematic and physical domain by incorporating layout constraints directly into the optimization loop. It uses a differentiable layout model to analytically compute area penalties and enforce design rules during gradient-based parameter inference, guiding the optimization toward physically realizable solutions.
@@ -355,7 +457,8 @@ The transition from schematic-level design to physical layout introduces parasit
 \end{enumerate}
 
 \subsection{Ambiguity, Heuristics, and the Need for Unified Flows}
-The reliance on expert intuition and heuristic decision-making in analog design makes formalizing the design process for AI challenging.
+The reliance on expert intuition and heuristic decision-making in analog design
+makes formalizing the design process for AI challenging.
 
 \begin{enumerate}
 	\item \textbf{Topology-Sizing Decoupling:} Traditionally, topology generation and device sizing are treated sequentially, often resulting in suboptimal choices that lead to expensive, iterative redesigns.
@@ -369,36 +472,94 @@ The reliance on expert intuition and heuristic decision-making in analog design 
 \end{enumerate}
 
 \section{ML and LLM Fundamentals in Analog EDA} % numbers put here should be replaced by real references when updating References list.
-The automation of Analog Integrated Circuit (IC) design is a critical yet challenging frontier in Electronic Design Automation (EDA). "1" Analog circuit design involves intrinsic complexities, such as continuous design spaces, coupled performance metrics (e.g., gain, noise, bandwidth, power), and dependence on expert heuristics, which historically limited the widespread adoption of automation compared to the digital domain."1"
-\newline
-Recently, the paradigm shift toward foundation models developed through self-supervised pre-training on large datasets followed by efficient fine-tuning has opened new avenues for automating complex circuit design tasks."4,5"
-These models, collectively referred to as Circuit Foundation Models (CFMs), are typically categorized into encoder-based methods for predictive tasks and decoder-based methods utilizing Large Language Models (LLMs) for generative tasks. "4,6,7"
+The automation of Analog Integrated Circuit (IC) design is a critical yet
+challenging frontier in Electronic Design Automation (EDA). "1" Analog circuit
+design involves intrinsic complexities, such as continuous design spaces,
+coupled performance metrics (e.g., gain, noise, bandwidth, power), and
+dependence on expert heuristics, which historically limited the widespread
+adoption of automation compared to the digital domain."1" \newline Recently,
+the paradigm shift toward foundation models developed through self-supervised
+pre-training on large datasets followed by efficient fine-tuning has opened new
+avenues for automating complex circuit design tasks."4,5" These models,
+collectively referred to as Circuit Foundation Models (CFMs), are typically
+categorized into encoder-based methods for predictive tasks and decoder-based
+methods utilizing Large Language Models (LLMs) for generative tasks. "4,6,7"
 
 \subsection{Foundational Machine Learning Context}
-Traditional ML approaches-alongside LLMs—have been systematically applied to address core analog challenges, particularly circuit sizing and layout generation. "1,8"
-Traditional ML/AI Techniques prior to the extensive use of LLMs, foundational AI methods often leveraged the structural nature of circuits:
+Traditional ML approaches-alongside LLMs—have been systematically applied to
+address core analog challenges, particularly circuit sizing and layout
+generation. "1,8" Traditional ML/AI Techniques prior to the extensive use of
+LLMs, foundational AI methods often leveraged the structural nature of
+circuits:
 
 \begin{itemize}
-    \item \textbf{Deep Neural Networks (DNNs):} DNNs are multilayer feedforward networks capable of learning complex, non-linear mappings between inputs (e.g., circuit parameters) and outputs (e.g., performance metrics). They have been widely applied for fast surrogate modeling, enabling rapid prediction of circuit performance to accelerate optimization loops.
-    
-    \item \textbf{Convolutional Neural Networks (CNNs):} CNNs are specialized DNNs designed to process grid-like data, such as images. In analog design, CNNs have been employed for tasks like extracting features from layout images, recognizing circuit patterns from schematics, and assisting in parasitic extraction or defect detection.
+	\item \textbf{Deep Neural Networks (DNNs):} DNNs are multilayer feedforward networks capable of learning complex, non-linear mappings between inputs (e.g., circuit parameters) and outputs (e.g., performance metrics). They have been widely applied for fast surrogate modeling, enabling rapid prediction of circuit performance to accelerate optimization loops.
+
+	\item \textbf{Convolutional Neural Networks (CNNs):} CNNs are specialized DNNs designed to process grid-like data, such as images. In analog design, CNNs have been employed for tasks like extracting features from layout images, recognizing circuit patterns from schematics, and assisting in parasitic extraction or defect detection.
 
 	\item \textbf{Graph Neural Networks (GNNs):} GNNs are crucial for generating representations that capture both the topological and feature information of circuits. Analog EDA tasks can be mapped onto graph structures, supporting functions like layout symmetry extraction and parasitic prediction. Early generative AI efforts like CktGNN formulated topology design as a graph generation task for Op-Amps. (to do: Other examples include GNN-based approaches for transistor-level design space exploration and layout optimization.)
 
 	\item \textbf{Reinforcement Learning (RL) and Optimization:} RL techniques have been effectively applied to automate topology selection and device sizing in analog circuits.\ (to add references here) By formulating the design process as a sequential decision-making problem with states representing circuit configurations, actions corresponding to parameter adjustments, and rewards reflecting performance metrics, RL agents can systematically learn optimal design policies. \newline For instance, frameworks such as RLATS employ RL to incrementally construct analog circuits using predefined subcircuit libraries. Additionally, hybrid approaches combining Bayesian Optimization (BO) with LLMs, exemplified by ADO-LLM, integrate domain expertise to enable more efficient and knowledge-driven design space exploration.
 
 	\item \textbf{Generative Models:} Generative models represent a transformative paradigm in analog circuit design, leveraging deep learning to synthesize novel circuit topologies and physical layouts. By learning latent representations from existing designs, these models can generate innovative configurations tailored to specific performance requirements. Variational Autoencoders (VAEs) and Generative Adversarial Networks (GANs) have emerged as particularly effective techniques for layout generation, topology exploration, and parameter optimization, providing a principled, data-driven methodology for navigating vast and complex design spaces. (to add references here:)
-	\end{itemize}
-Please don't use the \verb|{eqnarray}| equation environment. Use
-\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
-environment leaves unsightly spaces around relation symbols.
 
-Please note that the \verb|{subequations}| environment in {\LaTeX}
-will increment the main equation counter even when there are no
-equation numbers displayed. If you forget that, you might write an
-article in which the equation numbers skip from (17) to (20), causing
-the copy editors to wonder if you've discovered a new method of
-counting.
+\end{itemize}
+
+\subsection{Fundamentals of Large Language Models in Analog EDA}
+
+LLMs, generally classified as decoder-based foundation models (to add
+references here: ), have emerged as powerful tools for generative tasks within
+analog EDA. Their core application revolves around generating textual circuit
+representations (netlists or descriptive code) from natural language
+specifications. ("22", "23") \newline
+
+\noindent The adaptation of LLMs from general Natural Language Processing (NLP) tasks to analog circuit design is driven by several key factors and specialized techniques:
+
+\begin{enumerate} % to add references for each point here.
+	\item \textbf{Generative Capability:} LLMs are typically trained as generative pre-trained transformers, often employing a decoder-only architecture. This makes them ideal for generative EDA tasks such as generating Hardware Description Language (HDL) code (in the digital domain), or, in the analog domain, generating SPICE netlists or Python code (e.g., PySpice) that defines the circuit connectivity and devices based on high-level specifications.
+
+	\item \textbf{Abstraction Gap:} Unlike digital design, which uses high-level functional abstractions (e.g., Verilog), analog circuit design necessitates a low-level, component-specific design process that directly represents physical components. ("28 -> 30") LLMs must bridge this abstraction gap, requiring specialized domain knowledge and robust methods to handle the device-level complexities and continuous nature of analog circuits. ("28", "31")
+
+	\item \textbf{Reasoning and Knowledge Integration:} LLMs excel at processing massive text data and are increasingly used to distill complex human expertise and rules from academic papers. (to add references here:) This text reasoning ability can be leveraged to prune the optimization search space. For instance, one multi-agent framework extracts analog sizing relationships from academic literature to significantly enhance the efficiency of conventional optimization algorithms, demonstrating improvements up to 26.6×. (to add references here:)
+
+	\item \textbf{Domain Adaptation Techniques:} To effectively apply LLMs to analog EDA, several domain adaptation techniques are employed ("24", "32"):
+	    \begin{itemize} % to add references here per each point.
+		    \item \textbf{Prompt Engineering and In-Context Learning (ICL):} This training-free approach involves crafting precise instructions, examples, and contextual information directly into the prompt to guide the LLM's design process. AnalogCoder, for example, successfully implemented a training-free LLM agent using domain-specific prompt engineering to generate PySpice code. ICL can be seen as implicit fine-tuning, as it produces meta-gradients through forward computation.
+		    \item \textbf{Supervised Fine-Tuning (SFT):} When sufficient domain-specific data is available or can be synthesized, SFT is used to update the LLM's parameters for better domain adaptation:
+		            \textbf{Data Generation:} Frameworks like Masala-CHAI automate the process of creating large-scale, high-quality SPICE netlist datasets (7,500 examples) from analog textbooks by extracting schematics and generating corresponding captions and netlists. This high-quality data is then used for SFT.
+		            \textbf{Topology Generation:} LaMAGIC utilizes SFT on curated datasets to generate analog topology, specifically focusing on power converters.
+		    \item \textbf{Chain-of-Thought (CoT):} This technique encourages the LLM to generate detailed, step-by-step reasoning processes before outputting the final answer. AnalogXpert utilizes CoT to decompose the topology synthesis task into logical steps, such as block selection and connection, simulating the human design process.
+			\item \textbf{Retrieval-Augmented Generation (RAG):} RAG is crucial for addressing the data scarcity bottleneck in analog EDA by linking the LLM to external knowledge bases:
+				\begin{itemize}
+					\item \textbf{Mechanism:} RAG retrieves relevant information (e.g., netlist snippets, design specifications, or precedents) from circuit datasets and injects it into the LLM prompt as context.
+					\item \textbf{Diagram-Aware RAG (DA-RAG):} Analog design relies heavily on non-textual information like schematics. MenTeR introduced DA-RAG, leveraging an LLM to transform schematic diagrams and associated annotations found in textbooks into textual representations, enabling retrieval and comprehensive capture of design requirements.
+					\item \textbf{Application:} RAG is employed to assist in tasks like topology selection, documentation Q\&A, and enhancing the generation of netlists by providing specific examples and design patterns from the retrieved data.
+				\end{itemize}
+	    \end{itemize}
+	\item \textbf{Iterative and Multi-Agent Systems:} Given the complexity of analog design tasks, LLMs are often deployed within iterative and multi-agent frameworks to enhance robustness and performance:
+	    \begin{itemize} % to add references here per each point.
+		    \item \textbf{Feedback Loops:} AnalogCoder incorporates a feedback-enhanced design flow, where the LLM iteratively refines its generated designs based on simulation results and error messages, mimicking human-in-the-loop correction processes.
+		    \item \textbf{Proofreading Strategies:} AnalogXpert incorporates a domain-specific proofreading strategy where a checker verifies block selection and connection in the generated topology and provides detailed revision messages back to the LLM agent for iterative refinement.
+			\item \textbf{Multi-Agent Systems:} Complex tasks are handled by multiple specialized agents. Examples include AmpAgent, which uses agents for literature analysis, mathematical reasoning, and device sizing, and MenTeR, which uses a Chain-of-Stage (CoS) reasoning agent workflow to decompose complex design tasks into manageable sub-tasks.
+	    \end{itemize}
+	\item \textbf{Multimodal Fundamentals:} Analog EDA inherently deals with non-textual information, such as circuit diagrams, simulation results, and layout images. Multimodal LLMs (MLLMs) are employed to integrate these diverse data types, typically through dedicated vision and text encoders.
+	    \begin{itemize} % to add references here per each point.
+		    \item \textbf{Visual Reasoning:} MLLMs are essential for tasks that involve interpreting visual outputs, like waveform plots and schematics. Frameworks like AnalogCoder-Pro utilize a multimodal diagnosis-and-repair feedback loop that incorporates both simulation error messages and waveform images to help the LLM autonomously correct functional errors.
+		    \item \textbf{Schematic Interpretation:} The development of datasets like AMSNet 2.0 (which includes schematic images, netlists, and positional information) aims to empower MLLMs with robust capabilities in understanding Analog and Mixed-Signal (AMS) circuit schematics. However, initial studies indicated that current MLLMs struggled significantly with transistor-level net detection from schematics, achieving low accuracy rates (e.g., GPT-4 yielding about 45\% accuracy in transistor-level net detection).
+	    \end{itemize}
+\end{enumerate}
+
+\section{Several Applications in Analog EDA}
+
+Please don't use the \verb|{eqnarray}| equation environment. Use \verb|{align}|
+or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}| environment leaves
+unsightly spaces around relation symbols.
+
+Please note that the \verb|{subequations}| environment in {\LaTeX} will
+increment the main equation counter even when there are no equation numbers
+displayed. If you forget that, you might write an article in which the equation
+numbers skip from (17) to (20), causing the copy editors to wonder if you've
+discovered a new method of counting.
 
 	{\BibTeX} does not work by magic. It doesn't get the bibliographic
 data from thin air but from .bib files. If you use {\BibTeX} to produce a
@@ -414,43 +575,39 @@ supposed to be using, the label will pick up the last counter to be
 cross referenced instead. In particular, a \verb|\label| command
 should not go before the caption of a figure or a table.
 
-Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
-will not stop equation numbers inside \verb|{array}| (there won't be
-any anyway) and it might stop a wanted equation number in the
-surrounding equation.
-
+Do not use \verb|\nonumber| inside the \verb|{array}| environment. It will not
+stop equation numbers inside \verb|{array}| (there won't be any anyway) and it
+might stop a wanted equation number in the surrounding equation.
 
 \Figure[t!](topskip=0pt, botskip=0pt, midskip=0pt){fig2.png}
 { \textbf{Magnetization as a function of applied field.
 		It is good practice to explain the significance of the figure in the caption.}\label{fig2}}
 
 \section{Some Common Mistakes}
-The word ``data'' is plural, not singular. The subscript for the
-permeability of vacuum $\mu _{0}$ is zero, not a lowercase letter
-``o.'' The term for residual magnetization is ``remanence''; the adjective
-is ``remanent''; do not write ``remnance'' or ``remnant.'' Use the word
-``micrometer'' instead of ``micron.'' A graph within a graph is an
-``inset,'' not an ``insert.'' The word ``alternatively'' is preferred to the
-word ``alternately'' (unless you really mean something that alternates). Use
-the word ``whereas'' instead of ``while'' (unless you are referring to
-simultaneous events). Do not use the word ``essentially'' to mean
-``approximately'' or ``effectively.'' Do not use the word ``issue'' as a
-euphemism for ``problem.'' When compositions are not specified, separate
-chemical symbols by en-dashes; for example, ``NiMn'' indicates the
-intermetallic compound Ni$_{0.5}$Mn$_{0.5}$ whereas
-``Ni--Mn'' indicates an alloy of some composition
-Ni$_{x}$Mn$_{1-x}$.
+The word ``data'' is plural, not singular. The subscript for the permeability
+of vacuum $\mu _{0}$ is zero, not a lowercase letter ``o.'' The term for
+residual magnetization is ``remanence''; the adjective is ``remanent''; do not
+write ``remnance'' or ``remnant.'' Use the word ``micrometer'' instead of
+``micron.'' A graph within a graph is an ``inset,'' not an ``insert.'' The word
+``alternatively'' is preferred to the word ``alternately'' (unless you really
+mean something that alternates). Use the word ``whereas'' instead of ``while''
+(unless you are referring to simultaneous events). Do not use the word
+``essentially'' to mean ``approximately'' or ``effectively.'' Do not use the
+word ``issue'' as a euphemism for ``problem.'' When compositions are not
+specified, separate chemical symbols by en-dashes; for example, ``NiMn''
+indicates the intermetallic compound Ni$_{0.5}$Mn$_{0.5}$ whereas ``Ni--Mn''
+indicates an alloy of some composition Ni$_{x}$Mn$_{1-x}$.
 
 Be aware of the different meanings of the homophones ``affect'' (usually a
 verb) and ``effect'' (usually a noun), ``complement'' and ``compliment,''
-``discreet'' and ``discrete,'' ``principal'' (e.g., ``principal
-investigator'') and ``principle'' (e.g., ``principle of measurement''). Do
-not confuse ``imply'' and ``infer.''
+``discreet'' and ``discrete,'' ``principal'' (e.g., ``principal investigator'')
+and ``principle'' (e.g., ``principle of measurement''). Do not confuse
+``imply'' and ``infer.''
 
-Prefixes such as ``non,'' ``sub,'' ``micro,'' ``multi,'' and ``ultra'' are
-not independent words; they should be joined to the words they modify,
-usually without a hyphen. There is no period after the ``et'' in the Latin
-abbreviation ``\emph{et al.}'' (it is also italicized). The abbreviation ``i.e.,'' means
+Prefixes such as ``non,'' ``sub,'' ``micro,'' ``multi,'' and ``ultra'' are not
+independent words; they should be joined to the words they modify, usually
+without a hyphen. There is no period after the ``et'' in the Latin abbreviation
+``\emph{et al.}'' (it is also italicized). The abbreviation ``i.e.,'' means
 ``that is,'' and the abbreviation ``e.g.,'' means ``for example'' (these
 abbreviations are not italicized).
 
@@ -461,8 +618,8 @@ A general IEEE styleguide is available at \break
 \label{sec:guidelines}
 
 \subsection{Types of Graphics}
-The following list outlines the different types of graphics published in
-IEEE journals. They are categorized based on their construction, and use of
+The following list outlines the different types of graphics published in IEEE
+journals. They are categorized based on their construction, and use of
 color/shades of gray:
 
 \subsubsection{Color/Grayscale figures}
@@ -487,58 +644,47 @@ color/shades of gray:
 	\setlength{\tabcolsep}{3pt}
 	\begin{tabular}{|p{25pt}|p{75pt}|p{115pt}|}
 		\hline
-		Symbol                                         &
-		Quantity                                       &
-		Conversion from Gaussian and \par CGS EMU to SI $^{\mathrm{a}}$                 \\
-		\hline
-		$\Phi $                                        &
-		magnetic flux                                  &
-		1 Mx $\to  10^{-8}$ Wb $= 10^{-8}$ V$\cdot $s                                   \\
-		$B$                                            &
-		magnetic flux density, \par magnetic induction &
-		1 G $\to  10^{-4}$ T $= 10^{-4}$ Wb/m$^{2}$                                     \\
-		$H$                                            &
-		magnetic field strength                        &
-		1 Oe $\to  10^{3}/(4\pi )$ A/m                                                  \\
-		$m$                                            &
-		magnetic moment                                &
-		1 erg/G $=$ 1 emu \par $\to 10^{-3}$ A$\cdot $m$^{2} = 10^{-3}$ J/T             \\
-		$M$                                            &
-		magnetization                                  &
-		1 erg/(G$\cdot $cm$^{3}) =$ 1 emu/cm$^{3}$ \par $\to 10^{3}$ A/m                \\
-		4$\pi M$                                       &
-		magnetization                                  &
-		1 G $\to  10^{3}/(4\pi )$ A/m                                                   \\
-		$\sigma $                                      &
-		specific magnetization                         &
-		1 erg/(G$\cdot $g) $=$ 1 emu/g $\to $ 1 A$\cdot $m$^{2}$/kg                     \\
-		$j$                                            &
-		magnetic dipole \par moment                    &
-		1 erg/G $=$ 1 emu \par $\to 4\pi \times  10^{-10}$ Wb$\cdot $m                  \\
-		$J$                                            &
-		magnetic polarization                          &
-		1 erg/(G$\cdot $cm$^{3}) =$ 1 emu/cm$^{3}$ \par $\to 4\pi \times  10^{-4}$ T    \\
-		$\chi , \kappa $                               &
-		susceptibility                                 &
-		1 $\to  4\pi $                                                                  \\
-		$\chi_{\rho }$                                 &
-		mass susceptibility                            &
-		1 cm$^{3}$/g $\to  4\pi \times  10^{-3}$ m$^{3}$/kg                             \\
-		$\mu $                                         &
-		permeability                                   &
-		1 $\to  4\pi \times  10^{-7}$ H/m \par $= 4\pi \times  10^{-7}$ Wb/(A$\cdot $m) \\
-		$\mu_{r}$                                      &
-		relative permeability                          &
-		$\mu \to \mu_{r}$                                                               \\
-		$w, W$                                         &
-		energy density                                 &
-		1 erg/cm$^{3} \to  10^{-1}$ J/m$^{3}$                                           \\
-		$N, D$                                         &
-		demagnetizing factor                           &
-		1 $\to  1/(4\pi )$                                                              \\
+		Symbol                      &
+		Quantity                    &
+		Conversion from Gaussian and \par CGS EMU to SI $^{\mathrm{a}}$                                   \\ \hline $\Phi $ & magnetic flux & 1 Mx $\to
+		10^{-8}$ Wb $= 10^{-8}$ V$\cdot $s                                                                \\ $B$ & magnetic flux density, \par magnetic induction & 1 G $\to 10^{-4}$ T $= 10^{-4}$ Wb/m$^{2}$ \\ $H$                     &
+		magnetic field strength     & 1 Oe $\to 10^{3}/(4\pi )$ A/m                                       \\ $m$    & magnetic
+		moment                      & 1 erg/G $=$ 1 emu \par $\to 10^{-3}$ A$\cdot $m$^{2} = 10^{-3}$ J/T \\
+		$M$                         &
+		magnetization               &
+		1 erg/(G$\cdot $cm$^{3}) =$ 1 emu/cm$^{3}$ \par $\to 10^{3}$ A/m                                  \\
+		4$\pi M$                    &
+		magnetization               &
+		1 G $\to  10^{3}/(4\pi )$ A/m                                                                     \\
+		$\sigma $                   &
+		specific magnetization      &
+		1 erg/(G$\cdot $g) $=$ 1 emu/g $\to $ 1 A$\cdot $m$^{2}$/kg                                       \\
+		$j$                         &
+		magnetic dipole \par moment & 1 erg/G $=$ 1 emu \par $\to 4\pi \times  10^{-10}$ Wb$\cdot $m      \\
+		$J$                         &
+		magnetic polarization       &
+		1 erg/(G$\cdot $cm$^{3}) =$ 1 emu/cm$^{3}$ \par $\to 4\pi \times  10^{-4}$ T                      \\
+		$\chi , \kappa $            &
+		susceptibility              &
+		1 $\to  4\pi $                                                                                    \\
+		$\chi_{\rho }$              &
+		mass susceptibility         &
+		1 cm$^{3}$/g $\to  4\pi \times  10^{-3}$ m$^{3}$/kg                                               \\
+		$\mu $                      &
+		permeability                &
+		1 $\to  4\pi \times  10^{-7}$ H/m \par $= 4\pi \times  10^{-7}$ Wb/(A$\cdot $m)                   \\
+		$\mu_{r}$                   &
+		relative permeability       &
+		$\mu \to \mu_{r}$                                                                                 \\
+		$w, W$                      &
+		energy density              &
+		1 erg/cm$^{3} \to  10^{-1}$ J/m$^{3}$                                                             \\
+		$N, D$                      &
+		demagnetizing factor        &
+		1 $\to  1/(4\pi )$                                                                                \\
 		\hline
 		\multicolumn{3}{p{251pt}}{Vertical lines are optional in tables. Statements that serve as captions for
-		the entire table do not need footnote letters. }                                \\
+		the entire table do not need footnote letters. }                                                  \\
 		\multicolumn{3}{p{251pt}}{$^{\mathrm{a}}$Gaussian units are the same as cg emu for magnetostatics; Mx
 			$=$ maxwell, G $=$ gauss, Oe $=$ oersted; Wb $=$ weber, V $=$ volt, s $=$
 			second, T $=$ tesla, m $=$ meter, A $=$ ampere, J $=$ joule, kg $=$
@@ -549,73 +695,73 @@ color/shades of gray:
 
 \subsection{Multipart figures}
 Figures compiled of more than one sub-figure presented side-by-side, or
-stacked. If a multipart figure is made up of multiple figure
-types (one part is lineart, and another is grayscale or color) the figure
-should meet the stricter guidelines.
+stacked. If a multipart figure is made up of multiple figure types (one part is
+lineart, and another is grayscale or color) the figure should meet the stricter
+guidelines.
 
 \subsection{File Formats For Graphics}\label{formats}
-Format and save your graphics using a suitable graphics processing program
-that will allow you to create the images as PostScript (.PS), Encapsulated
-PostScript (.EPS), Tagged Image File Format (.TIFF), Portable Document
-Format (.PDF), Portable Network Graphics (.PNG), or Metapost (.MPS), sizes them, and adjusts
-the resolution settings. When
-submitting your final paper, your graphics should all be submitted
-individually in one of these formats along with the manuscript.
+Format and save your graphics using a suitable graphics processing program that
+will allow you to create the images as PostScript (.PS), Encapsulated
+PostScript (.EPS), Tagged Image File Format (.TIFF), Portable Document Format
+(.PDF), Portable Network Graphics (.PNG), or Metapost (.MPS), sizes them, and
+adjusts the resolution settings. When submitting your final paper, your
+graphics should all be submitted individually in one of these formats along
+with the manuscript.
 
 \subsection{Sizing of Graphics}
 Most charts, graphs, and tables are one column wide (3.5 inches/88
-millimeters/21 picas) or page wide (7.16 inches/181 millimeters/43
-picas). The maximum depth a graphic can be is 8.5 inches (216 millimeters/54
-picas). When choosing the depth of a graphic, please allow space for a
-caption. Figures can be sized between column and page widths if the author
-chooses, however it is recommended that figures are not sized less than
-column width unless when necessary.
+millimeters/21 picas) or page wide (7.16 inches/181 millimeters/43 picas). The
+maximum depth a graphic can be is 8.5 inches (216 millimeters/54 picas). When
+choosing the depth of a graphic, please allow space for a caption. Figures can
+be sized between column and page widths if the author chooses, however it is
+recommended that figures are not sized less than column width unless when
+necessary.
 
 There is currently one publication with column measurements that do not
 coincide with those listed above. Proceedings of the IEEE has a column
 measurement of 3.25 inches (82.5 millimeters/19.5 picas).
 
-The final printed size of author photographs is exactly
-1 inch wide by 1.25 inches tall (25.4 millimeters$\,\times\,$31.75 millimeters/6
-picas$\,\times\,$7.5 picas). Author photos printed in editorials measure 1.59 inches
-wide by 2 inches tall (40 millimeters$\,\times\,$50 millimeters/9.5 picas$\,\times\,$12
-picas).
+The final printed size of author photographs is exactly 1 inch wide by 1.25
+inches tall (25.4 millimeters$\,\times\,$31.75 millimeters/6
+picas$\,\times\,$7.5 picas). Author photos printed in editorials measure 1.59
+inches wide by 2 inches tall (40 millimeters$\,\times\,$50 millimeters/9.5
+picas$\,\times\,$12 picas).
 
 \subsection{Resolution }
-The proper resolution of your figures will depend on the type of figure it
-is as defined in the ``Types of Figures'' section. Author photographs,
-color, and grayscale figures should be at least 300dpi. Line art, including
-tables should be a minimum of 600dpi.
+The proper resolution of your figures will depend on the type of figure it is
+as defined in the ``Types of Figures'' section. Author photographs, color, and
+grayscale figures should be at least 300dpi. Line art, including tables should
+be a minimum of 600dpi.
 
 \subsection{Vector Art}
-In order to preserve the figures' integrity across multiple computer
-platforms, we accept files in the following formats: .EPS/.PDF/.PS. All
-fonts must be embedded or text converted to outlines in order to achieve the
-best-quality results.
+In order to preserve the figures' integrity across multiple computer platforms,
+we accept files in the following formats: .EPS/.PDF/.PS. All fonts must be
+embedded or text converted to outlines in order to achieve the best-quality
+results.
 
 \subsection{Color Space}
-The term color space refers to the entire sum of colors that can be
-represented within the said medium. For our purposes, the three main color
-spaces are Grayscale, RGB (red/green/blue) and CMYK
-(cyan/magenta/yellow/black). RGB is generally used with on-screen graphics,
-whereas CMYK is used for printing purposes.
+The term color space refers to the entire sum of colors that can be represented
+within the said medium. For our purposes, the three main color spaces are
+Grayscale, RGB (red/green/blue) and CMYK (cyan/magenta/yellow/black). RGB is
+generally used with on-screen graphics, whereas CMYK is used for printing
+purposes.
 
 All color figures should be generated in RGB or CMYK color space. Grayscale
-images should be submitted in Grayscale color space. Line art may be
-provided in grayscale OR bitmap colorspace. Note that ``bitmap colorspace''
-and ``bitmap file format'' are not the same thing. When bitmap color space
-is selected, .TIF/.TIFF/.PNG are the recommended file formats.
+images should be submitted in Grayscale color space. Line art may be provided
+in grayscale OR bitmap colorspace. Note that ``bitmap colorspace'' and ``bitmap
+file format'' are not the same thing. When bitmap color space is selected,
+.TIF/.TIFF/.PNG are the recommended file formats.
 
 \subsection{Accepted Fonts Within Figures}
-When preparing your graphics IEEE suggests that you use of one of the
-following Open Type fonts: Times New Roman, Helvetica, Arial, Cambria, and
-Symbol. If you are supplying EPS, PS, or PDF files all fonts must be
-embedded. Some fonts may only be native to your operating system; without
-the fonts embedded, parts of the graphic may be distorted or missing.
+When preparing your graphics IEEE suggests that you use of one of the following
+Open Type fonts: Times New Roman, Helvetica, Arial, Cambria, and Symbol. If you
+are supplying EPS, PS, or PDF files all fonts must be embedded. Some fonts may
+only be native to your operating system; without the fonts embedded, parts of
+the graphic may be distorted or missing.
 
-A safe option when finalizing your figures is to strip out the fonts before
-you save the files, creating ``outline'' type. This converts fonts to
-artwork what will appear uniformly on any screen.
+A safe option when finalizing your figures is to strip out the fonts before you
+save the files, creating ``outline'' type. This converts fonts to artwork what
+will appear uniformly on any screen.
 
 \subsection{Using Labels Within Figures}
 
@@ -623,158 +769,171 @@ artwork what will appear uniformly on any screen.
 Figure axis labels are often a source of confusion. Use words rather than
 symbols. As an example, write the quantity ``Magnetization,'' or
 ``Magnetization M,'' not just ``M.'' Put units in parentheses. Do not label
-axes only with units. As in Fig. 1, for example, write ``Magnetization
-(A/m)'' or ``Magnetization (A$\cdot$m$^{-1}$),'' not just ``A/m.'' Do not label axes with a ratio of quantities and
-units. For example, write ``Temperature (K),'' not ``Temperature/K.''
+axes only with units. As in Fig. 1, for example, write ``Magnetization (A/m)''
+or ``Magnetization (A$\cdot$m$^{-1}$),'' not just ``A/m.'' Do not label axes
+with a ratio of quantities and units. For example, write ``Temperature (K),''
+not ``Temperature/K.''
 
 Multipliers can be especially confusing. Write ``Magnetization (kA/m)'' or
 ``Magnetization (10$^{3}$ A/m).'' Do not write ``Magnetization
-(A/m)$\,\times\,$1000'' because the reader would not know whether the top
-axis label in Fig. 1 meant 16000 A/m or 0.016 A/m. Figure labels should be
-legible, approximately 8 to 10 point type.
+(A/m)$\,\times\,$1000'' because the reader would not know whether the top axis
+label in Fig. 1 meant 16000 A/m or 0.016 A/m. Figure labels should be legible,
+approximately 8 to 10 point type.
 
 \subsubsection{Subfigure Labels in Multipart Figures and Tables}
 Multipart figures should be combined and labeled before final submission.
-Labels should appear centered below each subfigure in 8 point Times New
-Roman font in the format of (a) (b) (c).
+Labels should appear centered below each subfigure in 8 point Times New Roman
+font in the format of (a) (b) (c).
 
 \subsection{File Naming}
-Figures (line artwork or photographs) should be named starting with the
-first 5 letters of the author's last name. The next characters in the
-filename should be the number that represents the sequential
-location of this image in your article. For example, in author
-``Anderson's'' paper, the first three figures would be named ander1.tif,
-ander2.tif, and ander3.ps.
+Figures (line artwork or photographs) should be named starting with the first 5
+letters of the author's last name. The next characters in the filename should
+be the number that represents the sequential location of this image in your
+article. For example, in author ``Anderson's'' paper, the first three figures
+would be named ander1.tif, ander2.tif, and ander3.ps.
 
-Tables should contain only the body of the table (not the caption) and
-should be named similarly to figures, except that `.t' is inserted
-in-between the author's name and the table number. For example, author
-Anderson's first three tables would be named ander.t1.tif, ander.t2.ps,
-ander.t3.eps.
+Tables should contain only the body of the table (not the caption) and should
+be named similarly to figures, except that `.t' is inserted in-between the
+author's name and the table number. For example, author Anderson's first three
+tables would be named ander.t1.tif, ander.t2.ps, ander.t3.eps.
 
 Author photographs should be named using the first five characters of the
-pictured author's last name. For example, four author photographs for a
-paper may be named: oppen.ps, moshc.tif, chen.eps, and duran.pdf.
+pictured author's last name. For example, four author photographs for a paper
+may be named: oppen.ps, moshc.tif, chen.eps, and duran.pdf.
 
-If two authors or more have the same last name, their first initial(s) can
-be substituted for the fifth, fourth, third$\ldots$ letters of their surname
-until the degree where there is differentiation. For example, two authors
-Michael and Monica Oppenheimer's photos would be named oppmi.tif, and
-oppmo.eps.
+If two authors or more have the same last name, their first initial(s) can be
+substituted for the fifth, fourth, third$\ldots$ letters of their surname until
+the degree where there is differentiation. For example, two authors Michael and
+Monica Oppenheimer's photos would be named oppmi.tif, and oppmo.eps.
 
 \subsection{Referencing a Figure or Table Within Your Paper}
 When referencing your figures and tables within your paper, use the
-abbreviation ``Fig.'' even at the beginning of a sentence. Figures should be numbered with Arabic Numerals.
-Do not abbreviate ``Table.'' Tables should be numbered with Roman Numerals.
+abbreviation ``Fig.'' even at the beginning of a sentence. Figures should be
+numbered with Arabic Numerals. Do not abbreviate ``Table.'' Tables should be
+numbered with Roman Numerals.
 
 \subsection{Submitting Your Graphics}
-Figures should be submitted individually, separate from the manuscript in one of the file formats listed above in Section IV-C. Place figure captions below the figures; place table titles above the tables. Please do not include captions as part of the figures, or put them in ‘‘text boxes’’ linked to the figures. Also, do not place borders around the outside of your figures.
+Figures should be submitted individually, separate from the manuscript in one
+of the file formats listed above in Section IV-C. Place figure captions below
+the figures; place table titles above the tables. Please do not include
+captions as part of the figures, or put them in ‘‘text boxes’’ linked to the
+figures. Also, do not place borders around the outside of your figures.
 
 \subsection{Color Processing/Printing in IEEE Journals}
-All IEEE Transactions, Journals, and Letters allow an author to publish
-color figures on IEEE {\it Xplore}$\circledR$\ at no charge, and automatically
+All IEEE Transactions, Journals, and Letters allow an author to publish color
+figures on IEEE {\it Xplore}$\circledR$\ at no charge, and automatically
 convert them to grayscale for print versions. In most journals, figures and
 tables may alternatively be printed in color if an author chooses to do so.
-Please note that this service comes at an extra expense to the author. If
-you intend to have print color graphics, include a note with your final
-paper indicating which figures or tables you would like to be handled that
-way, and stating that you are willing to pay the additional fee.
+Please note that this service comes at an extra expense to the author. If you
+intend to have print color graphics, include a note with your final paper
+indicating which figures or tables you would like to be handled that way, and
+stating that you are willing to pay the additional fee.
 
 \section{Conclusion}
-Although a conclusion may review the  main points of the paper, do not replicate the abstract as the conclusion. A
-conclusion might elaborate on the importance of the work or suggest
-applications and extensions.
+Although a conclusion may review the main points of the paper, do not replicate
+the abstract as the conclusion. A conclusion might elaborate on the importance
+of the work or suggest applications and extensions.
 
-If you have multiple appendices, use the $\backslash$appendices command below. If you have only one appendix, use
-$\backslash$appendix[Appendix Title]
+If you have multiple appendices, use the $\backslash$appendices command below.
+If you have only one appendix, use $\backslash$appendix[Appendix Title]
 
 \appendices
 \section{\break Footnotes}
-Number footnotes separately in superscript numbers.\footnote{It is recommended that footnotes be avoided (except for
-	the unnumbered footnote with the receipt date on the first page). Instead,
-	try to integrate the footnote information into the text.} Place the actual
-footnote at the bottom of the column in which it is cited; do not put
-footnotes in the reference list (endnotes). Use letters for table footnotes
-(see Table \ref{table}).
+Number footnotes separately in superscript numbers.\footnote{It is recommended
+	that footnotes be avoided (except for the unnumbered footnote with the receipt
+	date on the first page). Instead, try to integrate the footnote information
+	into the text.} Place the actual footnote at the bottom of the column in which
+it is cited; do not put footnotes in the reference list (endnotes). Use letters
+for table footnotes (see Table \ref{table}).
 
 \section{\break Submitting Your Paper for Review}
 
 \subsection{Final Stage}
-When your article is accepted, you can submit the final files, including figures, tables, and photos, per the journal's guidelines through the submission system used to submit the articlle.
-You may use \emph{Zip} for large files, or compress files using \emph{Compress, Pkzip, Stuffit,} or \emph{Gzip.}
+When your article is accepted, you can submit the final files, including
+figures, tables, and photos, per the journal's guidelines through the
+submission system used to submit the articlle. You may use \emph{Zip} for large
+files, or compress files using \emph{Compress, Pkzip, Stuffit,} or \emph{Gzip.}
 
-In addition, designate one author as the ``corresponding author.'' This is the author to
-whom proofs of the paper will be sent. Proofs are sent to the corresponding
-author only.
+In addition, designate one author as the ``corresponding author.'' This is the
+author to whom proofs of the paper will be sent. Proofs are sent to the
+corresponding author only.
 
 \subsection{Review Stage Using IEEE Author Portal}
-Article contributions to IEEE Access should be submitted electronically on the IEEE Author Portal. For more information, please visit
+Article contributions to IEEE Access should be submitted electronically on the
+IEEE Author Portal. For more information, please visit
 \underline{https://ieeeaccess.ieee.org/}.
 
 Along with other information, you will be asked to select the subject from a
-pull-down list. There are various steps to the
-submission process; you must complete all steps for a complete submission.
-At the end of each step you must click ``Save and Continue''; just uploading
-the paper is not sufficient. After the last step, you should see a
-confirmation that the submission is complete. You should also receive an
-e-mail confirmation. For inquiries regarding the submission of your article, please contact ieeeaccess@ieee.org.
+pull-down list. There are various steps to the submission process; you must
+complete all steps for a complete submission. At the end of each step you must
+click ``Save and Continue''; just uploading the paper is not sufficient. After
+the last step, you should see a confirmation that the submission is complete.
+You should also receive an e-mail confirmation. For inquiries regarding the
+submission of your article, please contact ieeeaccess@ieee.org.
 
-The manuscript should be prepared in a double column, single-spaced format using a required IEEE Access template.
-A Word or LaTeX file and a PDF file are both required upon submission in the IEEE Author Portal.
+The manuscript should be prepared in a double column, single-spaced format
+using a required IEEE Access template. A Word or LaTeX file and a PDF file are
+both required upon submission in the IEEE Author Portal.
 
 \subsection{Final Stage Using IEEE Author Portal}
 Upon acceptance, you will receive an email with specific instructions
 
-Designate the author who submitted the manuscript on
-IEEE Author Portal as the ``corresponding author.'' This is the only
-author to whom proofs of the paper will be sent.
+Designate the author who submitted the manuscript on IEEE Author Portal as the
+``corresponding author.'' This is the only author to whom proofs of the paper
+will be sent.
 
 \subsection{Copyright Form}
 Authors must submit an electronic IEEE Copyright Form (eCF) upon submitting
 their final manuscript files. You can access the eCF system through your
-manuscript submission system or through the Author Gateway. You are
-responsible for obtaining any necessary approvals and/or security
-clearances. For additional information on intellectual property rights,
-visit the IEEE Intellectual Property Rights department web page at
+manuscript submission system or through the Author Gateway. You are responsible
+for obtaining any necessary approvals and/or security clearances. For
+additional information on intellectual property rights, visit the IEEE
+Intellectual Property Rights department web page at
 \underline{http://www.ieee.org/publications\_standards/publications/}\break\underline{rights/index.html}.
 
 \section{\break IEEE Publishing Policy}
-The general IEEE policy requires that authors should only submit original
-work that has neither appeared elsewhere for publication, nor is under
-review for another refereed publication. The submitting author must disclose
-all prior publication(s) and current submissions when submitting a
-manuscript. Do not publish ``preliminary'' data or results. To avoid any delays in
-publication, please be sure to follow these instructions.  Final
-submissions should include source files of your accepted manuscript, high
-quality graphic files, and a formatted pdf file. If you have any questions
-regarding the final submission process, please contact the administrative
-contact for the journal.
-author is responsible for obtaining agreement of all coauthors and any
-consent required from employers or sponsors before submitting an article.
+The general IEEE policy requires that authors should only submit original work
+that has neither appeared elsewhere for publication, nor is under review for
+another refereed publication. The submitting author must disclose all prior
+publication(s) and current submissions when submitting a manuscript. Do not
+publish ``preliminary'' data or results. To avoid any delays in publication,
+please be sure to follow these instructions. Final submissions should include
+source files of your accepted manuscript, high quality graphic files, and a
+formatted pdf file. If you have any questions regarding the final submission
+process, please contact the administrative contact for the journal. author is
+responsible for obtaining agreement of all coauthors and any consent required
+from employers or sponsors before submitting an article.
 
-The IEEE Access Editorial Office does not publish conference
-records or proceedings, but can publish articles related to conferences that
-have undergone rigorous peer review. Minimally, two reviews are required for
-every article submitted for peer review.
+The IEEE Access Editorial Office does not publish conference records or
+proceedings, but can publish articles related to conferences that have
+undergone rigorous peer review. Minimally, two reviews are required for every
+article submitted for peer review.
 
 \section{\break Publication Principles}
 Authors should consider the following points:
 
 \begin{enumerate}
-	\item Technical papers submitted for publication must advance the state of knowledge and must cite relevant prior work.
-	\item The length of a submitted paper should be commensurate with the importance, or appropriate to the complexity, of the work. For example, an obvious extension of previously published work might not be appropriate for publication or might be adequately treated in just a few pages.
-	\item Authors must convince both peer reviewers and the editors of the scientific and technical merit of a paper; the standards of proof are higher when extraordinary or unexpected results are reported.
-	\item Because replication is required for scientific progress, papers submitted for publication must provide sufficient information to allow readers to perform similar experiments or calculations and
-	      use the reported results. Although not everything need be disclosed, a paper
-	      must contain new, useable, and fully described information. For example, a
-	      specimen's chemical composition need not be reported if the main purpose of
-	      a paper is to introduce a new measurement technique. Authors should expect
-	      to be challenged by reviewers if the results are not supported by adequate
-	      data and critical details.
-	\item Papers that describe ongoing work or announce the latest technical achievement, which are suitable for presentation at a professional conference, may not be appropriate for publication.
+	\item Technical papers submitted for publication must advance the state of knowledge
+	      and must cite relevant prior work.
+	\item The length of a submitted paper should be commensurate with the importance, or
+	      appropriate to the complexity, of the work. For example, an obvious extension
+	      of previously published work might not be appropriate for publication or might
+	      be adequately treated in just a few pages.
+	\item Authors must convince both peer reviewers and the editors of the scientific and
+	      technical merit of a paper; the standards of proof are higher when
+	      extraordinary or unexpected results are reported.
+	\item Because replication is required for scientific progress, papers submitted for
+	      publication must provide sufficient information to allow readers to perform
+	      similar experiments or calculations and use the reported results. Although not
+	      everything need be disclosed, a paper must contain new, useable, and fully
+	      described information. For example, a specimen's chemical composition need not
+	      be reported if the main purpose of a paper is to introduce a new measurement
+	      technique. Authors should expect to be challenged by reviewers if the results
+	      are not supported by adequate data and critical details.
+	\item Papers that describe ongoing work or announce the latest technical achievement,
+	      which are suitable for presentation at a professional conference, may not be
+	      appropriate for publication.
 \end{enumerate}
-
-
 
 \section{\break Reference Examples}
 
@@ -836,8 +995,10 @@ Authors should consider the following points:
 
 	\item \emph{Basic format for theses (M.S.) and dissertations (Ph.D.):}
 	      \begin{enumerate}
-		      \item J. K. Author, ``Title of thesis,'' M.S. thesis, Abbrev. Dept., Abbrev. Univ., City of Univ., Abbrev. State, year.
-		      \item J. K. Author, ``Title of dissertation,'' Ph.D. dissertation, Abbrev. Dept., Abbrev. Univ., City of Univ., Abbrev. State, year.
+		      \item J. K. Author, ``Title of thesis,'' M.S. thesis, Abbrev. Dept., Abbrev. Univ.,
+		            City of Univ., Abbrev. State, year.
+		      \item J. K. Author, ``Title of dissertation,'' Ph.D. dissertation, Abbrev. Dept.,
+		            Abbrev. Univ., City of Univ., Abbrev. State, year.
 	      \end{enumerate}
 	      See \cite{b25,b26}.
 
@@ -864,7 +1025,6 @@ Authors should consider the following points:
 
 \end{itemize}
 
-
 \section*{Acknowledgment}
 The preferred spelling of the word ``acknowledgment'' in American English is
 without an ``e'' after the ``g.'' Use the singular heading even if you have
@@ -872,7 +1032,6 @@ many acknowledgments. Avoid expressions such as ``One of us (S.B.A.) would
 like to thank $\ldots$ .'' Instead, write ``F. A. Author thanks $\ldots$ .'' In most
 cases, sponsor and financial support acknowledgments are placed in the
 unnumbered footnote on the first page, not here.
-
 
 \begin{thebibliography}{00}
 
@@ -968,19 +1127,18 @@ unnumbered footnote on the first page, not here.
 
 	From 2001 to 2004, he was a Research Assistant with the Princeton Plasma
 	Physics Laboratory. Since 2009, he has been an Assistant Professor with the
-	Mechanical Engineering Department, Texas A{\&}M University, College Station.
-	He is the author of three books, more than 150 articles, and more than 70
+	Mechanical Engineering Department, Texas A{\&}M University, College Station. He
+	is the author of three books, more than 150 articles, and more than 70
 	inventions. His research interests include high-pressure and high-density
 	nonthermal plasma discharge processes and applications, microscale plasma
 	discharges, discharges in liquids, spectroscopic diagnostics, plasma
 	propulsion, and innovation plasma applications. He is an Associate Editor of
 	the journal \emph{Earth, Moon, Planets}, and holds two patents.
 
-	Dr. Author was a recipient of the International Association of Geomagnetism
-	and Aeronomy Young Scientist Award for Excellence in 2008, and the IEEE
+	Dr. Author was a recipient of the International Association of Geomagnetism and
+	Aeronomy Young Scientist Award for Excellence in 2008, and the IEEE
 	Electromagnetic Compatibility Society Best Symposium Paper Award in 2011.
 \end{IEEEbiography}
-
 
 \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{author2.png}}]{Second B. Author} (M'76--SM'81--F'87) and all authors may include
 	biographies. Biographies are often not included in conference-related
@@ -993,21 +1151,20 @@ unnumbered footnote on the first page, not here.
 	field of study should be lower-cased.
 
 	The second paragraph uses the pronoun of the person (he or she) and not the
-	author's last name. It lists military and work experience, including summer
-	and fellowship jobs. Job titles are capitalized. The current job must have a
-	location; previous positions may be listed
-	without one. Information concerning previous publications may be included.
-	Try not to list more than three books or published articles. The format for
-	listing publishers of a book within the biography is: title of book
-	(publisher name, year) similar to a reference. Current and previous research
-	interests end the paragraph.
+	author's last name. It lists military and work experience, including summer and
+	fellowship jobs. Job titles are capitalized. The current job must have a
+	location; previous positions may be listed without one. Information concerning
+	previous publications may be included. Try not to list more than three books or
+	published articles. The format for listing publishers of a book within the
+	biography is: title of book (publisher name, year) similar to a reference.
+	Current and previous research interests end the paragraph.
 
-	The third paragraph begins with the author's
-	title and last name (e.g., Dr.\ Smith, Prof.\ Jones, Mr.\ Kajor, Ms.\ Hunter).
-	List any memberships in professional societies other than the IEEE. Finally,
-	list any awards and work for IEEE committees and publications. If a
-	photograph is provided, it should be of good quality, and
-	professional-looking. Following are two examples of an author's biography.
+	The third paragraph begins with the author's title and last name (e.g., Dr.\
+	Smith, Prof.\ Jones, Mr.\ Kajor, Ms.\ Hunter). List any memberships in
+	professional societies other than the IEEE. Finally, list any awards and work
+	for IEEE committees and publications. If a photograph is provided, it should be
+	of good quality, and professional-looking. Following are two examples of an
+	author's biography.
 \end{IEEEbiography}
 
 \newpage
@@ -1021,18 +1178,19 @@ unnumbered footnote on the first page, not here.
 	degree in mechanical engineering at Texas A{\&}M University, College
 	Station, TX, USA.
 
-	From 2008 to 2009, he was a Research Assistant with the Institute of
-	Physics, Academia Sinica, Tapei, Taiwan. His research interest includes the
-	development of surface processing and biological/medical treatment
-	techniques using nonthermal atmospheric pressure plasmas, fundamental study
-	of plasma sources, and fabrication of micro- or nanostructured surfaces.
+	From 2008 to 2009, he was a Research Assistant with the Institute of Physics,
+	Academia Sinica, Tapei, Taiwan. His research interest includes the development
+	of surface processing and biological/medical treatment techniques using
+	nonthermal atmospheric pressure plasmas, fundamental study of plasma sources,
+	and fabrication of micro- or nanostructured surfaces.
 
-	Mr. Author's awards and honors include the Frew Fellowship (Australian
-	Academy of Science), the I. I. Rabi Prize (APS), the European Frequency and
-	Time Forum Award, the Carl Zeiss Research Award, the William F. Meggers
-	Award and the Adolph Lomb Medal (OSA).
+	Mr. Author's awards and honors include the Frew Fellowship (Australian Academy
+	of Science), the I. I. Rabi Prize (APS), the European Frequency and Time Forum
+	Award, the Carl Zeiss Research Award, the William F. Meggers Award and the
+	Adolph Lomb Medal (OSA).
 \end{IEEEbiographynophoto}
 
 \EOD
 
 \end{document}
+Embedding
